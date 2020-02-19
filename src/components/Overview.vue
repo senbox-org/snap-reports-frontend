@@ -5,9 +5,26 @@
 </template>
 
 <script>
+const nSQL = require('@nano-sql/core').nSQL;
+
 export default {
   name: 'Overview',
   data () {
+    noSQL().createDatabase({
+      id: "simpleDB",
+      mode: "TEMP",
+      tables: [
+        {
+          name: "users",
+          model: {
+            // pk == primary key, ai == auto incriment,
+            "id:int": {pk: true, ai: true},
+            "name:string": {},
+            "age:int":{}
+          }
+        }
+      ]
+    })
     return {
       log: undefined
     }
