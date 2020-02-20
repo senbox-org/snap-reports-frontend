@@ -1,30 +1,17 @@
 <template>
-  <div class="hello">
+  <div class="overview">
     <div class="log">Log: {{ log }}</div>
   </div>
 </template>
 
 <script>
-const nSQL = require('@nano-sql/core').nSQL;
+const sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database("../assets/reportDB.db");
+console.log(db);
 
 export default {
   name: 'Overview',
   data () {
-    noSQL().createDatabase({
-      id: "simpleDB",
-      mode: "TEMP",
-      tables: [
-        {
-          name: "users",
-          model: {
-            // pk == primary key, ai == auto incriment,
-            "id:int": {pk: true, ai: true},
-            "name:string": {},
-            "age:int":{}
-          }
-        }
-      ]
-    })
     return {
       log: undefined
     }
