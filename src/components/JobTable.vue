@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tr v-for="(job, index) in jobs.data.jobs" :key="index" :class="[job.result.tag == 'SUCCESS' ? 'passed' : 'failed' ]">
-        <td> {{ job.ID }} </td>
+        <td><router-link :to="`/job/${job.ID}`">{{ job.ID }}</router-link></td>
         <td> {{ job.jobnum }} </td>
         <td> {{ job.dockerTag.name }} </td>
         <td> {{ job.testScope }} </td>

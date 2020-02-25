@@ -6,8 +6,8 @@
 
 <script>
 import JobTable from '@/components/JobTable.vue';
-
 const axios = require('axios').default;
+
 export default {
   name: 'Overview',
   data () {

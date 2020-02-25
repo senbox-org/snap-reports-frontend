@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Jobs from '../views/Jobs.vue'
 import Branches from '../views/Branches.vue'
+import Job from '../views/Job.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/jobs',
     name: 'Jobs',
     component: Jobs
+  },
+  {
+    path: '/job/:id(\\d+)',
+    name: 'Job',
+    component: Job
   },
   {
     path: '/branches',
