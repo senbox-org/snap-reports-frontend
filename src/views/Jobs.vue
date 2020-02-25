@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="jobs">
     <Overview />
   </div>
 </template>
@@ -10,7 +10,7 @@ import Overview from '@/components/Overview.vue';
 
 
 export default {
-  name: 'Home',
+  name: 'jobs',
   components: {
     Overview
   },
@@ -18,7 +18,7 @@ export default {
 
 </script>
 <style scoped>
-.home {
+.jobs {
   margin: 0;
   padding: 0;
 }
