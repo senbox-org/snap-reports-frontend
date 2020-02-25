@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/jobs">Jobs</router-link> |
+      <router-link to="/branches">Branches</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
