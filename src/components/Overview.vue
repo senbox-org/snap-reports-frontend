@@ -5,9 +5,6 @@
 </template>
 
 <script>
-const sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database("../assets/reportDB.db");
-console.log(db);
 
 export default {
   name: 'Overview',
