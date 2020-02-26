@@ -19,7 +19,7 @@ export default {
     this.info = "loading..."
     axios
       .get("http://localhost:9090/api/job/list")
-      .then(res =>(this.info = res));
+      .then(res =>(this.info = res.data));
   },
   components: {
     JobTable

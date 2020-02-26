@@ -1,6 +1,13 @@
 <template>
   <div>
-    <table>
+    <b-table
+      paginated="true"
+      :data="jobs.jobs"
+      :columns="columns"
+      :row-class="(row, index) => row.result.tag"
+    >
+    </b-table>
+    <!-- <table>
       <thead>
         <tr>
           <th> ID </th>
@@ -12,7 +19,7 @@
           <th> Result </th>
         </tr>
       </thead>
-      <tr v-for="(job, index) in jobs.data.jobs" :key="index" :class="[job.result.tag == 'SUCCESS' ? 'passed' : 'failed' ]">
+      <tr v-for="(job, index) in jobs.jobs" :key="index" :class="[job.result.tag == 'SUCCESS' ? 'passed' : 'failed' ]">
         <td><router-link :to="`/job/${job.ID}`">{{ job.ID }}</router-link></td>
         <td> {{ job.jobnum }} </td>
         <td> {{ job.dockerTag.name }} </td>
@@ -21,7 +28,7 @@
         <td> {{ duration(job) }} </td>
         <td> {{ job.result.tag }} </td>
       </tr>
-    </table>
+    </table> -->
   </div>
 </template>
 <script>
@@ -35,6 +42,42 @@ function i2s(num) {
 
 export default {
   name: 'Overview',
+  data() {
+    return {
+      columns: [
+        {
+          field: 'ID',
+          label: 'ID',
+          numeric: true,
+          sortable: true
+        },
+        {
+          field: 'jobnum',
+          label: 'Job Number',
+          numeric: true,
+          sortable: true
+        },
+        {
+          field: 'dockerTag.name',
+          label: 'Branch',
+          centered: true,
+          sortable: true
+        },
+        {
+          field: 'timestamp_start',
+          label: 'Time stamp',
+          centered: true,
+          sortable: true
+        },
+        {
+          field: 'result.tag',
+          label: 'Result',
+          centered: true,
+          sortable: true
+        }
+      ]
+    }
+  },
   props: {
     jobs: Object
   },
@@ -74,10 +117,10 @@ th, td {
   padding: 10px 20px;
 }
 
-.passed {
+.SUCCESS {
   background-color: rgba(125, 255, 125, 0.5);
 }
-.failed {
+.FAILED {
   background-color: rgba(255, 125, 125, 0.3);
 }
 </style>
