@@ -96,31 +96,11 @@ export default {
 </script>
 <style>
 
-table {
-  border: 2px solid #42a0b9;
-  border-radius: 3px;
-  background-color: #fff;
-  width: 100%;
-}
-
-th {
-  background-color: #42a0b9;
-  color: rgba(255,255,255,1);
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-th, td {
-  padding: 10px 20px;
-}
 
 .SUCCESS {
-  background-color: rgba(125, 255, 125, 0.5);
+  background-color: rgba(125, 255, 125, 0.2);
 }
 .FAILED {
-  background-color: rgba(255, 125, 125, 0.3);
+  background-color: rgba(255, 125, 125, 0.2);
 }
 </style>

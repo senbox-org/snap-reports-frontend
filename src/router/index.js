@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Jobs from '../views/Jobs.vue'
 import Branches from '../views/Branches.vue'
 import Job from '../views/Job.vue'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Jobs
+    component: Home
   },
   {
     path: '/jobs',
