@@ -23,7 +23,6 @@
           </b-navbar-item>
         </template>
     </b-navbar>
-
     <router-view/>
   </div>
 </template>
