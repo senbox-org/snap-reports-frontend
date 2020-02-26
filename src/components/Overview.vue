@@ -12,11 +12,10 @@ export default {
   name: 'Overview',
   data () {
     return {
-      info: undefined
+      info: {}
     }
   },
   mounted() {
-    this.info = "loading..."
     axios
       .get("http://localhost:9090/api/job/list")
       .then(res =>(this.info = res.data));

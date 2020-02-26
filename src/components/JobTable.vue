@@ -1,10 +1,11 @@
 <template>
   <div>
     <b-table
-      paginated="true"
+      :paginated="true"
       :data="jobs.jobs"
       :columns="columns"
       :row-class="(row, index) => row.result.tag"
+      @click="rowClicked"
     >
     </b-table>
     <!-- <table>
@@ -32,6 +33,8 @@
   </div>
 </template>
 <script>
+import router from '../router'
+
 const format = require('string-format');
 
 function i2s(num) {
@@ -82,7 +85,7 @@ export default {
     jobs: Object
   },
   methods: {
-    duration: function(job) {
+    duration(job) {
       var end = new Date(job.timestamp_end);
       var start = new Date(job.timestamp_start);
       console.log(end.getTime())
@@ -90,8 +93,11 @@ export default {
       var hour = Math.floor(diff / 3.6e6);
       var min = Math.round(diff / 6e4)  - hour * 60;
       return format("{0}h{1}m", hour, i2s(min));
+    },
+    rowClicked(record) {
+      router.push("/job/"+record["ID"]);
+    }
   }
-}
 }
 </script>
 <style>
