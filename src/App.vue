@@ -23,10 +23,15 @@
           </b-navbar-item>
         </template>
     </b-navbar>
-    <router-view/>
+    <div class="mainview">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <style>
-
+.mainview {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 </style>

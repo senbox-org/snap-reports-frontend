@@ -5,7 +5,7 @@
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
             <p class="subtitle">last GPT test job</p>
-            <p class="title">Job {{job.jobnum}} (<router-link :to="`/job/${job.ID}`">#{{ job.ID }}</router-link>)</p>
+            <p class="title">{{job.jobnum}} (<router-link :to="`/job/${job.ID}`">#{{ job.ID }}</router-link>)</p>
             <p class="job">
               <Info v-for="(field, index) in fields" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
             </p>
@@ -14,6 +14,7 @@
                 <StatLine :total="summary.num_tests" :passed="summary.passed"/>
               </svg>
             </p>
+            <router-link to="/jobs" tag="b-button">All jobs</router-link>
           </article>
         </div>
         <div class="tile is-parent">
