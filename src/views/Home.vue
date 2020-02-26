@@ -7,7 +7,7 @@
             <p class="subtitle">last GPT test job</p>
             <p class="title">{{job.jobnum}} (<router-link :to="`/job/${job.ID}`">#{{ job.ID }}</router-link>)</p>
             <p class="job">
-              <Info v-for="(field, index) in fields" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
+              <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
             </p>
             <p class="stats">
               <svg width="100%" height="45">
@@ -21,6 +21,10 @@
           <article class="tile is-child notification">
             <p class="subtitle">development branch</p>
             <p class="title">master</p>
+            <p class="job">
+              <Info tag="Tests count" :value="branch.count"/>
+              <BranchStatus/>
+            </p>
           </article>
         </div>
       </div>
@@ -30,6 +34,7 @@
 <script>
 import Info from '@/components/Info.vue';
 import StatLine from '@/components/StatLine.vue'
+import BranchStatus from '@/components/BranchStatus.vue'
 
 const axios = require('axios').default;
 
@@ -40,7 +45,8 @@ export default {
       id: this.$route.fullPath,
       job: undefined,
       summary: undefined,
-      fields: [
+      branch: undefined,
+      fields_job: [
         {
           tag: "SNAP version",
           id: "dockerTag.name"
@@ -76,6 +82,9 @@ export default {
     axios
       .get("http://localhost:9090/api/job/last/summary")
       .then(res =>(this.summary = res.data))
+    axios
+      .get("http://localhost:9090/api/branch/master/summary")
+      .then(res =>(this.branch = res.data))
   },
   methods: {
     getvalue: function(obj, key) {
@@ -89,7 +98,8 @@ export default {
   },
   components: {
     Info,
-    StatLine
+    StatLine,
+    BranchStatus
   }
 }
 </script>
@@ -99,6 +109,6 @@ export default {
   margin: 0;
   word-break: break-word;
   box-sizing: inherit;
-  font-size: 14pt;
+  font-size: 12pt;
 }
 </style>
