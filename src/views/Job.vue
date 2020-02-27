@@ -9,8 +9,8 @@
           <StatLine :total="summary.num_tests" :passed="summary.passed"/>
         </svg>
       </p>
-      <div v-for="(test, index) in summary.tests" :key="index">
-        {{test}}
+      <div v-for="(test, index) in summary.testsets" :key="index">
+        {{index}}: {{test.length}}
       </div>
     </article>
   </div>
@@ -67,7 +67,7 @@ export default {
       .get("http://localhost:9090/api"+this.id)
       .then(res =>(this.job = res.data));
     axios
-      .get("http://localhost:9090/api"+this.id+"/summary")
+      .get("http://localhost:9090/api"+this.id+"/summary/testsets")
       .then(res =>(this.summary = res.data))
   },
   methods: {
