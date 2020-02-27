@@ -4,7 +4,7 @@
 
       <text x="0" y="0" class="tinytext" transform="translate(78 19) rotate(60 0,0)">0</text>
       <text x="0" y="0" class="tinytext" transform="translate(90 3) rotate(60 0,0)">0:10</text>
-      <text x="0" y="0" class="tinytext" transform="translate(115 8) rotate(60 0,0)">all</text>
+      <text x="0" y="0" class="tinytext" transform="translate(113 8) rotate(60 0,0)">all</text>
 
       <text x="1" y="35" class="bigtext"> {{ tag }} </text>
       <circle cx="86" cy="30" r="4" :class="get_class(data.last)"/>
