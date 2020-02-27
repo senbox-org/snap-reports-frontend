@@ -2,8 +2,8 @@
   <g>
     <rect x="0" y="5" :width="passed_perc()" height="20" class="success"/>
     <rect :x="passed_perc()" y="5" :width="failed_perc()" height="20" class="failed"/>
-    <text x="1%" y="19" class="inner">{{passed}}</text>
-    <text :x="failednum_pos()" y="19" class="inner">{{total - passed}}</text>
+    <text  v-if="passed > 0" x="1%" y="19" class="inner">{{passed}}</text>
+    <text v-if="(total - passed) > 0" x="99%" y="19" class="inner" text-anchor="end">{{total - passed}}</text>
     <text x="0" y="40">Total: {{total}}</text>
   </g>
 </template>

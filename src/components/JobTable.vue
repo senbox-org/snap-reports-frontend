@@ -37,6 +37,12 @@ export default {
           sortable: true
         },
         {
+          field: 'testScope',
+          label: 'Test Scope',
+          centered: true,
+          sortable: true
+        },
+        {
           field: 'timestamp_start',
           label: 'Time stamp',
           centered: true,

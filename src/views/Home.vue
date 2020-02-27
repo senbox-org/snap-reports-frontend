@@ -20,11 +20,13 @@
         <div class="tile is-parent">
           <article class="tile is-child notification">
             <p class="subtitle">development branch</p>
-            <p class="title">master</p>
+            <p class="title"><router-link to="/branch/master">master</router-link></p>
             <p class="job">
-              <Info tag="Tests count" :value="branch.count"/>
-              <BranchStatus/>
+              <Info tag="Number of executions" :value="branch.count"/>
+              <b>Improvements</b><br>
+              <BranchStatus :stats="branch"/>
             </p>
+            <router-link to="/branches" tag="b-button">All branches</router-link>
           </article>
         </div>
       </div>
