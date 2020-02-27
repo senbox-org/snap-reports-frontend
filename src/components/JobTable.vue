@@ -94,10 +94,31 @@
       </b-table>
 </template>
 <script>
+  const axios = require('axios').default;
+
   export default {
     name: 'JobTable',
     props: {
       data: Array
+    },
+    methods: {
+      showInfo(test_id) {
+        var buefy = this.$buefy;
+        axios
+          .get("http://localhost:9090/api/test/"+test_id)
+          .then(function(res) {
+            var test = res.data;
+            console.log("Here");
+            buefy.dialog.alert(
+              {
+                title: 'Test ' + test.name + ' (#'+test.ID+')',
+                message: '<b>Description:</b> '+test.description + '<br>'
+                  + '<b>Author:</b> '+test.author +'<br>'
+                  + '<b>Frequency:</b> '+ test.frequency +'<br>'
+              }
+            )
+          })
+      },
     }
   }
 </script>
