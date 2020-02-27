@@ -1,11 +1,11 @@
 <template>
   <div class="overview">
-    <JobTable :jobs="info" />
+    <JobsTable :jobs="info" />
   </div>
 </template>
 
 <script>
-import JobTable from '@/components/JobTable.vue';
+import JobsTable from '@/components/JobsTable.vue';
 const axios = require('axios').default;
 
 export default {
@@ -21,7 +21,7 @@ export default {
       .then(res =>(this.info = res.data));
   },
   components: {
-    JobTable
+    JobsTable
   },
 }
 </script>

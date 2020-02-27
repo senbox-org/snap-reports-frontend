@@ -9,44 +9,20 @@
           <StatLine :total="summary.num_tests" :passed="summary.passed"/>
         </svg>
       </p>
-      <b-table
-        paginated
-        per-page="10"
-        :data="prepare_data()"
-        :row-class="(row, index) => row.result"
-        detailed
-        hoverable
-        custom-detail-row
-        detail-key="index"
-        @details-open="(row, index) => $buefy.toast.open(`Testset ${row.name}`)"
-        show-detail-icon
-      >
-        <template slot-scope="props">
-          <b-table-column field="name" label="Name" sortable>
-            {{ props.row.name }}
-          </b-table-column>
-          <b-table-column field="num_tests" label="Tests" sortable centered>
-            <svg width="200" height="45">
-              <StatLine :total="props.row.num_tests" :passed="props.row.passed"/>
-            </svg>
-          </b-table-column>
-          <b-table-column field="duration" label="Duration" sortable numeric>
-            {{ props.row.duration }} s
-          </b-table-column>
-          <b-table-column field="result" label="Result" sortable>
-            {{ props.row.result }}
-          </b-table-column>
-        </template>
-        <template slot="detail" slot-scope="props">
-          <tr v-for="item in props.row.tests" :key="item.name" :class="item.result.tag+'_LIGHT'">
-            <td > #{{ item.ID }} </td>
-            <td >&nbsp;&nbsp;&nbsp;&nbsp;{{ item.name }}</td>
-            <td > </td>
-            <td style="text-align: right"> {{ item.profile.duration }} s</td>
-            <td > {{ item.result.tag }} </td>
-          </tr>
-        </template>
-      </b-table>
+      <section>
+        <b-tabs v-model="activeTab">
+          <b-tab-item label="Summary">
+            <element>
+              <JobSummaryItem title="Duration" :data="fulljob.duration" :total="fulljob.total" unit="s"/>
+              <JobSummaryItem title="CPU Time" :data="fulljob.cpu_time" :total="fulljob.total" unit="s"/>
+              <JobSummaryItem title="Memory" :data="fulljob.memory_avg" :total="fulljob.total" unit="Mb"/>
+            </element>
+          </b-tab-item>
+          <b-tab-item label="Testset table">
+            <JobTable :data="data"/>
+          </b-tab-item>
+        </b-tabs>
+      </section>
     </article>
   </div>
 </template>
@@ -54,6 +30,8 @@
 <script>
 import Info from '@/components/Info.vue';
 import StatLine from '@/components/StatLine.vue';
+import JobTable from '@/components/JobTable.vue';
+import JobSummaryItem from '@/components/JobSummaryItem.vue';
 
 const axios = require('axios').default;
 
@@ -64,6 +42,7 @@ export default {
       id: this.$route.fullPath,
       job: undefined,
       summary: undefined,
+      data: undefined,
       fields_job: [
         {tag: "SNAP version", id: "dockerTag.name"},
         {tag: "Branch", id: "branch"},
@@ -72,39 +51,26 @@ export default {
         {tag: "Ended", id: "timestamp_end"},
         {tag: "Status", id: "result.tag", status: true}
       ],
-      columns: [
-        {
-          field: 'name',
-          label: 'Testset',
-          sortable: true
-        },
-        {
-          field: 'num_tests',
-          label: 'Number of tests',
-          numeric: true,
-          sortable: true
-        },
-        {
-          field: 'duration',
-          label: 'Duration',
-          key: 'duration',
-          numeric: true,
-          sortable: true
-        }
-      ]
+      fulljob: {}
     }
   },
   components: {
     Info,
-    StatLine
+    JobTable,
+    StatLine,
+    JobSummaryItem
   },
   mounted() {
+    var obj = this;
     axios
       .get("http://localhost:9090/api"+this.id)
       .then(res =>(this.job = res.data));
     axios
       .get("http://localhost:9090/api"+this.id+"/summary/testsets")
-      .then(res =>(this.summary = res.data))
+      .then(function(res) {
+        obj.summary = res.data
+        obj.prepare_data();
+      });
   },
   methods: {
     getvalue(obj, key) {
@@ -115,15 +81,53 @@ export default {
       }
       return val;
     },
+    showInfo(test_id) {
+      var buefy = this.$buefy;
+      axios
+        .get("http://localhost:9090/api/test/"+test_id)
+        .then(function(res) {
+          var test = res.data;
+          console.log("Here");
+          buefy.dialog.alert(
+            {
+              title: 'Test ' + test.name + ' (#'+test.ID+')',
+              message: '<b>Description:</b> '+test.description + '<br>'
+                + '<b>Author:</b> '+test.author +'<br>'
+                + '<b>Frequency:</b> '+ test.frequency +'<br>'
+            }
+          )
+        })
+    },
     prepare_data() {
       var rows = []
+      var fulljob = {
+          total: 0,
+          cpu_time: {
+            total: 0,
+            reference: 0,
+            improved: 0
+          },
+          duration: {
+            total: 0,
+            reference: 0,
+            improved: 0
+          },
+          memory_avg: {
+            total: 0,
+            reference: 0,
+            improved: 0
+          },
+      };
       for (var testset in this.summary.testsets) {
         var row = {
           name: testset,
           num_tests: 0,
           cpu_time: 0,
+          cpu_time_ref: 0,
           memory_avg: 0,
+          memory_avg_ref: 0,
           duration: 0,
+          duration_ref: 0,
           passed: 0,
           result: 'SUCCESS',
           tests: []
@@ -132,26 +136,36 @@ export default {
           var test = this.summary.testsets[testset][id];
           row.num_tests ++;
           row.duration += test.profile.duration;
+          row.memory_avg += test.profile.memory_avg;
+          row.cpu_time += test.profile.cpu_time;
           if (test.result.tag == 'FAILED') {
             row.result = 'FAILED';
           } else {
             row.passed ++;
           }
+          if (test.reference != null) {
+            row.memory_avg_ref += test.reference.memory_avg;
+            row.cpu_time_ref += test.reference.cpu_time;
+            row.duration_ref += test.reference.duration;
+            fulljob.duration.total += test.profile.duration;
+            fulljob.duration.reference += test.reference.duration;
+            fulljob.duration.improved += test.profile.duration < test.reference.duration ? 1 : 0;
+            fulljob.cpu_time.total += test.profile.cpu_time;
+            fulljob.cpu_time.reference += test.reference.cpu_time;
+            fulljob.cpu_time.improved += test.profile.cpu_time < test.reference.cpu_time ? 1 : 0;
+            fulljob.memory_avg.total += test.profile.memory_avg;
+            fulljob.memory_avg.reference += test.reference.memory_avg;
+            fulljob.memory_avg.improved += test.profile.memory_avg < test.reference.memory_avg ? 1 : 0;
+            fulljob.total ++;
+          }
           row.tests.push(test);
         }
         rows.push(row)
       }
-      return rows;
+      this.data = rows;
+      this.fulljob = fulljob;
     }
   },
 }
 
 </script>
-<style scoped>
-  .SUCCESS_LIGHT {
-    background-color: rgba(125, 255, 125, 0.1);
-  }
-  .FAILED_LIGHT {
-    background-color: rgba(255, 125, 125, 0.1);
-  }
-</style>
