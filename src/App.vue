@@ -16,6 +16,9 @@
             <b-navbar-item tag="router-link" :to="{ path:'/branches'}">
                 Branches
             </b-navbar-item>
+            <b-navbar-item tag="router-link" :to="{ path:'/tests'}">
+                Tests
+            </b-navbar-item>
         </template>
         <template slot="end">
           <b-navbar-item  tag="router-link" :to="{ path:'/about'}">

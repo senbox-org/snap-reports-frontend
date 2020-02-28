@@ -26,7 +26,7 @@
               <span class="subtext">ref: - </span>
             </div>
             <div v-else>
-              <div :class="props.row.duration < props.row.duration_ref ? 'good' : 'bad bold'">{{ props.row.duration }} s </div>
+              <div :class="get_class(props.row.duration, props.row.duration_ref)">{{ props.row.duration }} s </div>
               <span class="subtext">ref: {{ props.row.duration_ref.toFixed(1)}} s</span>
             </div>
           </b-table-column>
@@ -36,7 +36,7 @@
               <span class="subtext">ref: - </span>
             </div>
             <div v-else>
-              <div :class="props.row.cpu_time < props.row.cpu_time_ref ? 'good' : 'bad bold'">
+              <div :class="get_class(props.row.cpu_time, props.row.cpu_time_ref)">
                 {{ props.row.cpu_time }} s
               </div>
               <span class="subtext">ref: {{ props.row.cpu_time_ref.toFixed(1) }} s</span>
@@ -48,7 +48,7 @@
               <span class="subtext">ref: - </span>
             </div>
             <div v-else>
-              <div :class="props.row.memory_avg < props.row.memory_avg_ref ? 'good' : 'bad bold'">
+              <div :class="get_class(props.row.memory_avg, props.row.memory_avg_ref)">
                 {{ props.row.memory_avg }} Mb
               </div>
               <span class="subtext">ref: {{ props.row.memory_avg_ref.toFixed(0) }} Mb</span>
@@ -70,21 +70,21 @@
             <td >&nbsp;&nbsp;&nbsp;&nbsp;{{ item.name }}</td>
             <td > </td>
             <td v-if="item.reference != null " class="text-right">
-              <div :class="item.profile.duration < item.reference.duration ? 'good' : 'bad bold'"> {{ item.profile.duration }} s </div>
+              <div :class="get_class(item.profile.duration, item.reference.duration)"> {{ item.profile.duration }} s </div>
               <span class="subtext">ref: {{item.reference.duration.toFixed(1)}} s</span>
             </td>
             <td v-else class="text-right">
               {{ item.profile.duration }} s <br>
             </td>
             <td v-if="item.reference != null" class="text-right">
-              <div :class="item.profile.cpu_time < item.reference.cpu_time ? 'good' : 'bad bold'"> {{ item.profile.cpu_time }} s </div>
+              <div :class="get_class(item.profile.cpu_time, item.reference.cpu_time)"> {{ item.profile.cpu_time }} s </div>
               <span class="subtext">ref: {{item.reference.cpu_time.toFixed(1)}} s</span>
             </td>
             <td v-else class="text-right">
               {{ item.profile.cpu_time }} s
             </td>
             <td v-if="item.reference != null" class="text-right">
-              <div :class="item.profile.memory_avg < item.reference.memory_avg ? 'good' : 'bad bold'"> {{ item.profile.memory_avg }} Mb </div>
+              <div :class="get_class(item.profile.memory_avg, item.reference.memory_avg)"> {{ item.profile.memory_avg }} Mb </div>
               <span class="subtext">ref: {{item.reference.memory_avg.toFixed(0) }} Mb</span>
             </td>
             <td v-else class="text-right"> {{ item.profile.memory_avg }} Mb </td>
@@ -94,31 +94,29 @@
       </b-table>
 </template>
 <script>
-  const axios = require('axios').default;
+  import router from '../router'
 
   export default {
     name: 'JobTable',
     props: {
-      data: Array
+      data: Array,
+      job_id: String,
+      branch: String
     },
     methods: {
       showInfo(test_id) {
-        var buefy = this.$buefy;
-        axios
-          .get("http://localhost:9090/api/test/"+test_id)
-          .then(function(res) {
-            var test = res.data;
-            console.log("Here");
-            buefy.dialog.alert(
-              {
-                title: 'Test ' + test.name + ' (#'+test.ID+')',
-                message: '<b>Description:</b> '+test.description + '<br>'
-                  + '<b>Author:</b> '+test.author +'<br>'
-                  + '<b>Frequency:</b> '+ test.frequency +'<br>'
-              }
-            )
-          })
+        var branch =this.branch.split(':')[1];
+
+        router.push({path: this.job_id+"/test/"+test_id, query:{branch:branch}});
       },
+      get_class(val, ref) {
+        if (val > ref) {
+          return 'bad bold';
+        } else if (val < ref) {
+          return 'good';
+        }
+        return undefined;
+      }
     }
   }
 </script>

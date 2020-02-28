@@ -3,7 +3,10 @@ import VueRouter from 'vue-router'
 import Jobs from '../views/Jobs.vue'
 import Branches from '../views/Branches.vue'
 import Job from '../views/Job.vue'
+import JobTest from '../views/job/Test.vue'
 import Home from '../views/Home.vue'
+import Tests from '../views/Tests.vue'
+
 
 Vue.use(VueRouter)
 
@@ -24,9 +27,20 @@ const routes = [
     component: Job
   },
   {
+    path: '/job/:id(\\d+)/test/:test(\\d+)',
+    name: 'JobTest',
+    component: JobTest,
+    props: (route) => ({ branch: route.query.branch })
+  },
+  {
     path: '/branches',
     name: 'Branches',
     component: Branches
+  },
+  {
+    path: '/tests',
+    name: 'Tests',
+    component: Tests
   },
   {
     path: '/about',

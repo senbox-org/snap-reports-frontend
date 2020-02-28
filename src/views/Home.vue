@@ -22,9 +22,7 @@
             <p class="subtitle">development branch</p>
             <p class="title"><router-link to="/branch/master">master</router-link></p>
             <p class="job">
-              <Info tag="Number of executions" :value="branch.count"/>
-              <b>Improvements</b><br>
-              <BranchStatus :stats="branch"/>
+              <BranchStatus branch="master"/>
             </p>
             <router-link to="/branches" tag="b-button">All branches</router-link>
           </article>
@@ -47,7 +45,6 @@ export default {
       id: this.$route.fullPath,
       job: undefined,
       summary: undefined,
-      branch: undefined,
       fields_job: [
         {
           tag: "SNAP version",
@@ -84,9 +81,7 @@ export default {
     axios
       .get("http://localhost:9090/api/job/last/summary")
       .then(res =>(this.summary = res.data))
-    axios
-      .get("http://localhost:9090/api/branch/master/summary")
-      .then(res =>(this.branch = res.data))
+
   },
   methods: {
     getvalue: function(obj, key) {

@@ -13,13 +13,18 @@
         <b-tabs v-model="activeTab">
           <b-tab-item label="Summary">
             <element>
-              <JobSummaryItem title="Duration" :data="fulljob.duration" :total="fulljob.total" unit="s"/>
-              <JobSummaryItem title="CPU Time" :data="fulljob.cpu_time" :total="fulljob.total" unit="s"/>
-              <JobSummaryItem title="Memory" :data="fulljob.memory_avg" :total="fulljob.total" unit="Mb"/>
+              <JobSummaryItem
+                v-for="(field, index) in fulljob.fields"
+                :key="index"
+                :title="field.label"
+                :data="field"
+                :total="fulljob.total"
+                :unit="field.unit"
+              />
             </element>
           </b-tab-item>
           <b-tab-item label="Testset table">
-            <JobTable :data="data"/>
+            <JobTable :data="data" :job_id="id" :branch="job.dockerTag.name"/>
           </b-tab-item>
         </b-tabs>
       </section>
@@ -85,21 +90,40 @@ export default {
       var rows = []
       var fulljob = {
           total: 0,
-          cpu_time: {
-            total: 0,
-            reference: 0,
-            improved: 0
-          },
-          duration: {
-            total: 0,
-            reference: 0,
-            improved: 0
-          },
-          memory_avg: {
-            total: 0,
-            reference: 0,
-            improved: 0
-          },
+          fields: [
+            {
+              field: 'cpu_time',
+              label: 'CPU Time',
+              unit: 's',
+              total: 0,
+              reference: 0,
+              improved: 0
+            },
+            {
+              field: 'duration',
+              label: 'Duration',
+              unit: 's',
+              total: 0,
+              reference: 0,
+              improved: 0
+            },
+            {
+              field: 'memory_avg',
+              label: 'Memory',
+              unit: 'Mb',
+              total: 0,
+              reference: 0,
+              improved: 0
+            },
+            {
+              field: 'io_read',
+              label: 'IO Read',
+              unit: 'b',
+              total: 0,
+              reference: 0,
+              improved: 0,
+            }
+          ]
       };
       for (var testset in this.summary.testsets) {
         var row = {
@@ -111,6 +135,8 @@ export default {
           memory_avg_ref: 0,
           duration: 0,
           duration_ref: 0,
+          io_read_ref:0,
+          io_read: 0,
           passed: 0,
           result: 'SUCCESS',
           tests: []
@@ -121,6 +147,7 @@ export default {
           row.duration += test.profile.duration;
           row.memory_avg += test.profile.memory_avg;
           row.cpu_time += test.profile.cpu_time;
+          row.io_read += test.profile.io_read;
           if (test.result.tag == 'FAILED') {
             row.result = 'FAILED';
           } else {
@@ -130,15 +157,15 @@ export default {
             row.memory_avg_ref += test.reference.memory_avg;
             row.cpu_time_ref += test.reference.cpu_time;
             row.duration_ref += test.reference.duration;
-            fulljob.duration.total += test.profile.duration;
-            fulljob.duration.reference += test.reference.duration;
-            fulljob.duration.improved += test.profile.duration < test.reference.duration ? 1 : 0;
-            fulljob.cpu_time.total += test.profile.cpu_time;
-            fulljob.cpu_time.reference += test.reference.cpu_time;
-            fulljob.cpu_time.improved += test.profile.cpu_time < test.reference.cpu_time ? 1 : 0;
-            fulljob.memory_avg.total += test.profile.memory_avg;
-            fulljob.memory_avg.reference += test.reference.memory_avg;
-            fulljob.memory_avg.improved += test.profile.memory_avg < test.reference.memory_avg ? 1 : 0;
+            row.io_read_ref += test.reference.io_read
+            for (var i in fulljob.fields) {
+              var field = fulljob.fields[i].field;
+              var value = test.profile[field];
+              var reference = test.reference[field];
+              fulljob.fields[i].total += value;
+              fulljob.fields[i].reference += reference;
+              fulljob.fields[i].improved += value < reference ? 1 : 0;
+            }
             fulljob.total ++;
           }
           row.tests.push(test);
