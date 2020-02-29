@@ -49,11 +49,16 @@
           </b-table-column>
         </template>
       </b-table>
+      <br>
+      <p class="subtitle">Profile</p>
+      <vue-plotly :data="[cpu_profile(), memory_profile(), io_read_profile()]" :layout="layout" :options="options"/>
+
     </article>
   </div>
 </template>
 <script>
   import Info from '@/components/Info.vue';
+  import VuePlotly from '@statnett/vue-plotly'
   import router from '@/router'
 
   const axios = require('axios').default;
@@ -93,7 +98,27 @@
             tag: 'IO Read',
             unit: 'b'
           }
-        ]
+        ],
+        options: {
+          autosizable: true,
+          responsive: true,
+          displaylogo: false,
+          displayModeBar: false
+        },
+        layout: {
+          yaxis: {
+            title: '%',
+            side: 'left'
+          },
+          yaxis2: {
+            title: 'Mb',
+            overlaying: 'y',
+            side: 'right'
+          },
+          xaxis: {
+            title: 'time (s)'
+          }
+        }
       }
     },
     mounted() {
@@ -108,7 +133,8 @@
         .then((res) => (this.local_reference = res.data))
     },
     components: {
-      Info
+      Info,
+      VuePlotly
     },
     methods: {
       get_class(value, reference) {
@@ -130,6 +156,47 @@
       },
       back() {
         router.back();
+      },
+      cpu_profile() {
+        var time = [];
+        var cpu = [];
+        for (var i = 1; i < this.data.raw_data.length; i++) {
+          time.push(this.data.raw_data[i][0] / 1000);
+          cpu.push(this.data.raw_data[i][3]);
+        }
+        return {
+          x: time,
+          y: cpu,
+          name: "CPU Usage"
+        }
+      },
+      io_read_profile() {
+        var time = [];
+        var read = [];
+        for (var i = 1; i < this.data.raw_data.length; i++) {
+          time.push(this.data.raw_data[i][0] / 1000);
+          read.push(this.data.raw_data[i][5] / (1024 * 8));
+        }
+        return {
+          x: time,
+          y: read,
+          yaxis: "y2",
+          name: "IO Read"
+        }
+      },
+      memory_profile() {
+        var time = [];
+        var memory = [];
+        for (var i = 1; i < this.data.raw_data.length; i++) {
+          time.push(this.data.raw_data[i][0] / 1000);
+          memory.push(this.data.raw_data[i][1]);
+        }
+        return {
+          x: time,
+          y: memory,
+          yaxis: "y2",
+          name: 'Memory'
+        }
       }
     },
     props: {
@@ -153,5 +220,16 @@
 .success_text {
   color: #23d160;
   font-weight: 500;
+}
+
+.wbg {
+  background-color: #fff;
+}
+.object {
+  background-color: #ddd;
+  width: 94%;
+  margin-left: 3%;
+  margin-right: 3%;
+  height: 600px;
 }
 </style>
