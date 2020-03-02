@@ -14,7 +14,7 @@
         <circle cx="260" cy="11" r="4" class="good"/>
       </g>
       <g>
-        <text x="0" y="33" class="smalltext">0: last job | 0:10: mean last 10 jobs | all: mean all jobs</text>
+        <text x="0" y="33" class="smalltext">0: last job | 0:10: avg last 10 jobs | all: avg all jobs</text>
       </g>
     </svg>
   </span>

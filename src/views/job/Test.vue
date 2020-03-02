@@ -139,13 +139,11 @@
   export default {
     name: 'JobTest',
     data() {
-      var url = this.$route.fullPath;
-      var test_id = url.split('/')[4].split('?')[0];
-      var job_id = url.split('/')[2];
+      var test_id = this.$route.params.test;
+      var job_id = this.$route.params.job;
       return {
         id: test_id,
         job: job_id,
-        url: url,
         data: undefined,
         reference: undefined,
         local_reference: undefined,

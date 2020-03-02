@@ -24,7 +24,6 @@ export default {
   props: {
     tag: String,
     data: Object,
-    improved: Number,
     total: Number
   },
   methods: {

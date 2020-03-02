@@ -3,6 +3,7 @@
     <article>
       <p class="subtitle">GPT test job summary</p>
       <p class="title">{{job.jobnum}} (#{{job.ID}})</p>
+      <b>SNAP version:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
       <p class="stats">
         <svg width="100%" height="45">
@@ -44,12 +45,12 @@ export default {
   name: 'job',
   data() {
     return {
-      id: this.$route.fullPath,
+      id: this.$route.params.id,
+      branch: undefined,
       job: undefined,
       summary: undefined,
       data: undefined,
       fields_job: [
-        {tag: "SNAP version", id: "dockerTag.name"},
         {tag: "Branch", id: "branch"},
         {tag: "Test scope", id: "testScope"},
         {tag: "Started", id: "timestamp_start"},
@@ -68,10 +69,13 @@ export default {
   mounted() {
     var obj = this;
     axios
-      .get("http://localhost:9090/api"+this.id)
-      .then(res =>(this.job = res.data));
+      .get("http://localhost:9090/api/job/"+this.id)
+      .then(function(res){
+        obj.job = res.data;
+        obj.branch= res.data.dockerTag.name.split(':')[1];
+      });
     axios
-      .get("http://localhost:9090/api"+this.id+"/summary/testsets")
+      .get("http://localhost:9090/api/job/"+this.id+"/summary/testsets")
       .then(function(res) {
         obj.summary = res.data
         obj.prepare_data();
