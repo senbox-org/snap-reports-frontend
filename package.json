@@ -8,7 +8,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@statnett/vue-plotly": "^0.3.2",
     "axios": "^0.19.2",
     "buefy": "^0.8.12",
     "core-js": "^3.6.4",
@@ -16,6 +15,7 @@
     "plotly.js": "^1.52.2",
     "string-format": "^2.0.0",
     "vue": "^2.6.11",
+    "vue-plotly": "^1.1.0",
     "vue-router": "^3.1.6"
   },
   "devDependencies": {
