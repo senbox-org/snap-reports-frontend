@@ -41,11 +41,11 @@
             <b-table-column v-if="local_reference != null" label="Branch Average" numeric>
               <p >
                 <b-tag size="is-medium" :type="get_type(data[props.row.field], local_reference[props.row.field].average)">
-                  {{local_reference[props.row.field].average.toFixed(1)}} {{props.row.unit}}
+                  {{local_reference[props.row.field].average.toFixed(1)}} {{props.row.unit}} <span class='lighttext'>(std: {{local_reference[props.row.field].std.toFixed(1)}} {{props.row.unit}})</span>
                 </b-tag>
               </p>
               <div :class="'subtext '+get_class(data[props.row.field], local_reference[props.row.field].average)">
-                {{(data[props.row.field] - local_reference[props.row.field].average).toFixed(1)}} {{props.row.unit}} - STD: {{local_reference[props.row.field].std.toFixed(1)}} {{props.row.unit}}<br>
+                {{(data[props.row.field] - local_reference[props.row.field].average).toFixed(1)}} {{props.row.unit}}<br>
                 {{data[props.row.field] > local_reference[props.row.field].average ? '+' : ''}}{{((data[props.row.field] / local_reference[props.row.field].average - 1) * 100).toFixed(1)}} %
               </div>
             </b-table-column>
@@ -412,6 +412,10 @@
   font-size: 10pt;
 }
 
+.lighttext {
+  font-weight: 300;
+}
+
 .failed_text {
   color: #ff3860;
   font-weight: 500;
@@ -439,4 +443,5 @@
   float: left;
   padding: 0;
 }
+
 </style>
