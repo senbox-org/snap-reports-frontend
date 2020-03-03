@@ -38,7 +38,7 @@
                 {{data[props.row.field] > reference[props.row.field] ? '+' : ''}}{{((data[props.row.field] / reference[props.row.field] - 1) * 100).toFixed(1)}} %
               </div>
             </b-table-column>
-            <b-table-column v-if="local_reference != null" label="Branch Average" numeric>
+            <b-table-column v-if="local_reference != undefined" label="Branch Average" numeric>
               <p >
                 <b-tag size="is-medium" :type="get_type(data[props.row.field], local_reference[props.row.field].average)">
                   {{local_reference[props.row.field].average.toFixed(1)}} {{props.row.unit}} <span class='lighttext'>(std: {{local_reference[props.row.field].std.toFixed(1)}} {{props.row.unit}})</span>
