@@ -1,7 +1,7 @@
 <template>
   <div class="notification">
-    <article>
-      <p class="subtitle">job <a @click="back()">#{{job}}</a> <br> execution #{{data.ID}}</p>
+    <article v-if="data != undefined">
+      <p class="subtitle">job <router-link :to="'/job/'+job">#{{job}}</router-link> <br> execution #{{data.ID}}</p>
       <p class="title">{{data.test.name}} (<router-link :to="`/test/${data.test.ID}`">#{{data.test.ID}}</router-link>)</p>
       <p class="subtitle">result: <b :class="data.result.tag">{{data.result.tag}}</b></p>
       <b>Description</b><br>
@@ -12,7 +12,7 @@
       <Info tag="Frequency" :value="data.test.frequency"/>
       <Info tag="Graph" :value="data.test.graphPath"/>
       <Info tag="Start" :value="data.start"/>
-      <Info tag="Branch" :value="branch" />
+      <b>Branch:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <br>
       <b-tabs cards>
       <b-tab-item label="Summary">
@@ -129,7 +129,6 @@
   import { Plotly } from 'vue-plotly'
 
   import Info from '@/components/Info.vue';
-  import router from '@/router'
 
   import api from '@/assets/api.js'
 
@@ -275,9 +274,6 @@
           return 'is-danger'
         }
         return undefined;
-      },
-      back() {
-        router.back();
       },
       profiles() {
         var time = [];

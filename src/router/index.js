@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Jobs from '../views/Jobs.vue'
-import Branches from '../views/Branches.vue'
-import Branch from '../views/branches/Branch.vue'
-import Job from '../views/job/Job.vue'
-import JobTest from '../views/job/Test.vue'
-import Home from '../views/Home.vue'
-import Tests from '../views/Tests.vue'
+import Jobs from '@/views/Jobs.vue'
+import Branches from '@/views/Branches.vue'
+import Branch from '@/views/branches/Branch.vue'
+import Job from '@/views/job/Job.vue'
+import JobTest from '@/views/job/Test.vue'
+import Home from '@/views/Home.vue'
+import Tests from '@/views/Tests.vue'
+import Test from '@/views/tests/Test.vue'
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,11 @@ const routes = [
     path: '/tests',
     name: 'Tests',
     component: Tests
+  },
+  {
+    path: '/test/:id(\\d+)',
+    name: 'Test',
+    component: Test
   },
   {
     path: '/about',

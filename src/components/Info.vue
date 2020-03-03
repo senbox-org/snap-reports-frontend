@@ -1,15 +1,12 @@
 <template>
   <div class="info-row">
-    <b>{{ tag }}:</b> {{value}}<br>
+    <b>{{ tag }}:</b> {{value}} {{unit}}<br>
   </div>
 </template>
 <script>
 export default {
   name: 'Info',
-  props:{
-    tag: String,
-    value: String
-  },
+  props:['tag', 'value', 'unit']
 }
 </script>
 <style>
