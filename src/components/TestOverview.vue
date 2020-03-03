@@ -1,23 +1,33 @@
 <template>
   <section :id="test">
-    <b-field grouped group-multiline>
-      <b-field label="Branch">
-        <b-select v-model="sel" @input="update">
-          <option v-for="branch in branches" :key="branch" :value="branch">{{branch}}</option>
-        </b-select>
+    <div class="hw">
+      <b-field grouped group-multiline>
+        <b-field label="Branch">
+          <b-select v-model="sel" @input="update">
+            <option v-for="branch in branches" :key="branch" :value="branch">{{branch}}</option>
+          </b-select>
+        </b-field>
       </b-field>
-    </b-field>
-    <div v-if="summary != undefined">
-      <Info tag="Number of executions" :value="summary.executions"/>
-      <div v-if="summary.executions > 0">
-        <svg width="35%" height="50px">
-          <StatLine :passed="summary.results.passed" :total="summary.executions"/>
-        </svg>
-        <Info tag="Average duration" :value="summary.duration.average.toFixed(1)" unit='s'/>
-        <Info tag="Average CPU time" :value="summary.cpu_time.average.toFixed(1)" unit='s'/>
-        <Info tag="Average memory usage" :value="summary.memory_avg.average.toFixed(1)" unit='Mb'/>
-        <Info tag="Average IO Read" :value="summary.io_read.average.toFixed(1)" />
+      <div v-if="summary != undefined">
+        <Info tag="Number of executions" :value="summary.executions"/>
+        <div v-if="summary.executions > 0">
+          <svg width="70%" height="50px">
+            <StatLine :passed="summary.results.passed" :total="summary.executions"/>
+          </svg>
+          <Info tag="Average duration" :value="summary.duration.average.toFixed(1)" unit='s'/>
+          <Info tag="Average CPU time" :value="summary.cpu_time.average.toFixed(1)" unit='s'/>
+          <Info tag="Average memory usage" :value="summary.memory_avg.average.toFixed(1)" unit='Mb'/>
+          <Info tag="Average IO Read" :value="summary.io_read.average.toFixed(1)" />
+        </div>
       </div>
+    </div>
+    <div class="hw"  v-if="reference != undefined">
+      <b> Reference</b><br>
+      <Info tag="Updated" :value="reference.updated"/>
+      <Info tag="Average duration" :value="reference.duration.toFixed(1)" unit='s'/>
+      <Info tag="Average CPU time" :value="reference.cpu_time.toFixed(1)" unit='s'/>
+      <Info tag="Average memory usage" :value="reference.memory_avg.toFixed(1)" unit='Mb'/>
+      <Info tag="Average IO Read" :value="reference.io_read.toFixed(1)" />
     </div>
   </section>
 </template>
@@ -35,6 +45,7 @@ export default {
       branches: ["any"],
       sel : "any",
       summary: undefined,
+      reference: undefined
     }
   },
   mounted() {
@@ -44,6 +55,9 @@ export default {
     axios
       .get(api.call('api/test', this.test, 'summary'))
       .then((res) => (this.summary = res.data));
+    axios
+      .get(api.call('api/test', this.test, 'reference'))
+      .then((res) => (this.reference = res.data));
   },
   methods: {
     update(){
