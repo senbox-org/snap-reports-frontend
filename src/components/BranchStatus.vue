@@ -30,6 +30,8 @@
   import SimpleStatsLegend from '@/components/SimpleStatsLegend.vue';
   import Info from '@/components/Info.vue';
 
+  import api from '@/assets/api.js';
+
   const axios = require('axios').default;
 
   export default {
@@ -46,7 +48,7 @@
     },
     mounted() {
       axios
-        .get("http://localhost:9090/api/branch/"+this.branch+"/summary")
+        .get(api.call('api/branch', this.branch, 'summary'))
         .then(res =>(this.stats = res.data));
     },
     components: {

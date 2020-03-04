@@ -18,6 +18,7 @@
 
 <script>
 import BranchStatus from '@/components/BranchStatus.vue'
+import api from '@/assets/api.js';
 
 const axios = require('axios').default;
 
@@ -38,7 +39,7 @@ export default {
   mounted() {
     var obj = this;
     axios
-      .get("http://localhost:9090/api/branch/list")
+      .get(api.call("api/branch/list"))
       .then(function(res){
         obj.list = res.data.branches;
       });

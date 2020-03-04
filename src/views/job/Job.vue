@@ -39,6 +39,8 @@ import StatLine from '@/components/StatLine.vue';
 import JobTable from '@/components/JobTable.vue';
 import JobSummaryItem from '@/components/JobSummaryItem.vue';
 
+import api from '@/assets/api.js';
+
 const axios = require('axios').default;
 
 export default {
@@ -69,13 +71,13 @@ export default {
   mounted() {
     var obj = this;
     axios
-      .get("http://localhost:9090/api/job/"+this.id)
+      .get(api.call('api/job', this.id))
       .then(function(res){
         obj.job = res.data;
         obj.branch= res.data.dockerTag.name.split(':')[1];
       });
     axios
-      .get("http://localhost:9090/api/job/"+this.id+"/summary/testsets")
+      .get(api.call('api/job', this.id, 'summary/testsets'))
       .then(function(res) {
         obj.summary = res.data
         obj.prepare_data();

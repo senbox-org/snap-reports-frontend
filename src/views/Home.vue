@@ -36,6 +36,8 @@ import Info from '@/components/Info.vue';
 import StatLine from '@/components/StatLine.vue'
 import BranchStatus from '@/components/BranchStatus.vue'
 
+import api from '@/assets/api.js';
+
 const axios = require('axios').default;
 
 export default {
@@ -76,10 +78,10 @@ export default {
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:9090/api/job/last")
+      .get(api.call("api/job/last"))
       .then(res =>(this.job = res.data));
     axios
-      .get("http://localhost:9090/api/job/last/summary")
+      .get(api.call("api/job/last/summary"))
       .then(res =>(this.summary = res.data))
 
   },

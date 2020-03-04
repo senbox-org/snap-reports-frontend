@@ -6,6 +6,8 @@
 
 <script>
 import JobsTable from '@/components/JobsTable.vue';
+import api from '@/assets/api.js';
+
 const axios = require('axios').default;
 
 export default {
@@ -17,7 +19,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:9090/api/job/list")
+      .get(api.call("job/list"))
       .then(res =>(this.info = res.data));
   },
   components: {
