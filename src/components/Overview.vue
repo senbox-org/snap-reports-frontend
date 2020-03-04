@@ -19,7 +19,7 @@ export default {
   },
   mounted() {
     axios
-      .get(api.call("job/list"))
+      .get(api.call("api/job/list"))
       .then(res =>(this.info = res.data));
   },
   components: {
