@@ -108,12 +108,22 @@ export default {
       } else {
         xs = this[field];
       }
-      return [
+      var res =  [
         {
+          name: 'data distribution',
           type: 'histogram',
           x: xs,
         }
-      ]
+      ];
+      if (mode == 'val' && this.reference != null) {
+        res.push({
+          name: 'reference',
+          type: 'scatter',
+          x: [this.reference[field]],
+          y: [0]
+        });
+      }
+      return res;
     },
     layout(field, mode) {
       return {
