@@ -131,6 +131,21 @@ export default {
             }
           },
         });
+      } else {
+        res.push({
+          name: 'reference',
+          type: 'scatter',
+          x: [0],
+          y: [0],
+          marker: {
+            color: 'LightGreen',
+            size: 12,
+            line: {
+                color: 'MediumGreen',
+                width: 2
+            }
+          },
+        });
       }
       return res;
     },
