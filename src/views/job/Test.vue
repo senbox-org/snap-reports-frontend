@@ -55,71 +55,78 @@
       <b-tab-item label="Profile">
         <div>
           <Plotly :data="profiles()" :layout="layout" :display-mode-bar="false"/>
-          <b-tag type="is-info"><b>Note: </b> the IO Read counter Y axis is hidden to avoid confusion.</b-tag>
+          <p class="v-gap">
+            <b-tag type="is-white"><b>Note: </b> the IO Read counter Y axis is hidden to avoid confusion.</b-tag>
+          </p>
         </div>
       </b-tab-item>
       <b-tab-item label="Histograms">
-        <div class="hw">
-          <Plotly
-            :data="hist('duration')"
-            :display-mode-bar="false"
-            :layout="{
-              title: 'Duration - distribution',
-              yaxis: {
-                title: '# exectuions'
-              },
-              xaxis: {
-                title: 'Time (s)'
-              }
-            }"
-          />
+        <div>
+          <div class="hw">
+            <Plotly
+              :data="hist('duration')"
+              :display-mode-bar="false"
+              :layout="{
+                title: 'Duration - distribution',
+                yaxis: {
+                  title: '# exectuions'
+                },
+                xaxis: {
+                  title: 'Time (s)'
+                }
+              }"
+            />
+          </div>
+          <div class="hw">
+            <Plotly
+              :data="hist('cpu_time')"
+              :display-mode-bar="false"
+              :layout="{
+                title: 'CPU Time - distribution',
+                yaxis: {
+                  title: '# exectuions'
+                },
+                xaxis: {
+                  title: 'Time (s)'
+                }
+              }"
+            />
+          </div>
+          <br>
+          <div class="hw">
+            <Plotly
+              :data="hist('memory_avg')"
+              :display-mode-bar="false"
+              :layout="{
+                title: 'Memory average - distribution',
+                yaxis: {
+                  title: '# exectuions'
+                },
+                xaxis: {
+                  title: 'Memory (Mb)'
+                }
+              }"
+            />
+          </div>
+          <div class="hw">
+            <Plotly
+              :data="hist('io_read')"
+              :display-mode-bar="false"
+              :layout="{
+                title: 'IO Read - distribution',
+                yaxis: {
+                  title: '# exectuions'
+                },
+                xaxis: {
+                  title: 'IO Counter (#)'
+                }
+              }"
+            />
+          </div>
         </div>
-        <div class="hw">
-          <Plotly
-            :data="hist('cpu_time')"
-            :display-mode-bar="false"
-            :layout="{
-              title: 'CPU Time - distribution',
-              yaxis: {
-                title: '# exectuions'
-              },
-              xaxis: {
-                title: 'Time (s)'
-              }
-            }"
-          />
-        </div>
-        <br>
-        <div class="hw">
-          <Plotly
-            :data="hist('memory_avg')"
-            :display-mode-bar="false"
-            :layout="{
-              title: 'Memory average - distribution',
-              yaxis: {
-                title: '# exectuions'
-              },
-              xaxis: {
-                title: 'Memory (Mb)'
-              }
-            }"
-          />
-        </div>
-        <div class="hw">
-          <Plotly
-            :data="hist('io_read')"
-            :display-mode-bar="false"
-            :layout="{
-              title: 'IO Read - distribution',
-              yaxis: {
-                title: '# exectuions'
-              },
-              xaxis: {
-                title: 'IO Counter (#)'
-              }
-            }"
-          />
-        </div>
+        <p class="v-gap">
+          <b-tag type="is-white"><b>Note: </b> the expected distribution is computed using mean and standard deviation of the current branch.</b-tag>
+        </p>
       </b-tab-item>
     </b-tabs>
 
@@ -456,6 +463,12 @@
   margin: auto;
   float: left;
   padding: 0;
+  margin-bottom: 0.5em;
+  padding-right: 0.5em ;
+}
+
+.v-gap {
+  margin-top: 0.5em;
 }
 
 </style>
