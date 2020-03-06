@@ -14,13 +14,19 @@
           <b>{{ props.row.title}}</b>
         </b-table-column>
         <b-table-column field="cpu" label="CPU Time" numeric>
-          {{ props.row.cpu() }}
+          <b-tag :type="props.row.status('cpu')">
+            {{ props.row.cpu() }}
+          </b-tag>
         </b-table-column>
-        <b-table-column field="cpu" label="Average Memory" numeric>
-          {{ props.row.memory() }}
+        <b-table-column field="memory" label="Average Memory" numeric>
+          <b-tag :type="props.row.status('memory')">
+            {{ props.row.memory() }}
+          </b-tag>
         </b-table-column>
-        <b-table-column field="cpu" label="IO Read" numeric>
-          {{ props.row.read() }}
+        <b-table-column field="read" label="IO Read" numeric>
+          <b-tag :type="props.row.status('read')">
+            {{ props.row.read() }}
+          </b-tag>
         </b-table-column>
       </template>
     </b-table>
@@ -40,24 +46,28 @@
             cpu: () => (this.total('cpu').toFixed(1) + ' s'),
             memory: () => (this.total('memory').toFixed(1) + ' Mb'),
             read: () => (this.total('read').toFixed(1)),
+            status: (field) => (this.total(field) > this.ref(field)? "is-danger" : "is-success")
           },
           {
             title: 'Reference',
             cpu: () => (this.ref('cpu').toFixed(1) + ' s'),
             memory: () => (this.ref('memory').toFixed(1) + ' Mb'),
-            read: () => (this.ref('read').toFixed(1))
+            read: () => (this.ref('read').toFixed(1)),
+            status: () => undefined
           },
           {
             title: 'Difference',
             cpu: () => ((this.total('cpu') - this.ref('cpu')).toFixed(1) + ' s'),
             memory: () => ((this.total('memory') - this.ref('memory')).toFixed(1) + ' Mb'),
-            read: () => ((this.total('read') - this.ref('read')).toFixed(1))
+            read: () => ((this.total('read') - this.ref('read')).toFixed(1)),
+            status: (field) => (this.total(field) > this.ref(field)? "is-danger" : "is-success")
           },
           {
             title: 'Improved tests',
-            cpu: () => (this.improved('cpu')),
-            memory: () => (this.improved('memory')),
-            read: () => (this.improved('read'))
+            cpu: () => (this.improved('cpu') + '/' + this.data.length),
+            memory: () => (this.improved('memory') + '/' + this.data.length),
+            read: () => (this.improved('read') + '/' + this.data.length),
+            status: () => undefined
           }
         ],
         sel: 'last10'
