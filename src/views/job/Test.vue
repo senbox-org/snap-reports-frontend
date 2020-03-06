@@ -208,6 +208,14 @@
               width: 2
           }
         },
+        ref_marker: {
+          color: 'LightGreen',
+          size: 12,
+          line: {
+              color: 'MediumGreen',
+              width: 2
+          }
+        },
         std_line: {
           color: '#333',
           width: 1,
@@ -390,6 +398,17 @@
             marker: this.marker
           }
         ]);
+        if (this.reference != null){
+          res.push(
+            {
+              x: [this.reference[field]],
+              y: [0],
+              name: "Reference value",
+              type: "scatter",
+              marker: this.ref_marker
+            }
+          )
+        }
         return res;
       }
     },

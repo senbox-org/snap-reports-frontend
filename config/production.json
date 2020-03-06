@@ -1,6 +1,0 @@
-{
-  "service": {
-    "host": "snap-build-server.tilaa.cloud",
-    "port": 9090
-  }
-}
