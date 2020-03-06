@@ -131,7 +131,7 @@ export default {
             }
           },
         });
-      } else {
+      } else if (this.reference != null){
         res.push({
           name: 'reference',
           type: 'scatter',
