@@ -25,11 +25,11 @@
         </b-table-column>
         <b-table-column v-for="col in cols" :key="col.title" :label="col.title" :field="col.field+'.'+sel" centered sortable>
           <table class="compact">
-            <tr><td align>value</td>
-              <td align><b-tag size="is-medium" :type="getType(props.row[col.field][sel], props.row[col.field].reference)">
+            <tr><td align class="lighttext">value</td>
+              <td align><b-tag  :type="getType(props.row[col.field][sel], props.row[col.field].reference)">
                 {{props.row[col.field][sel].toFixed(1)}} {{col.unit}}</b-tag></td></tr>
-            <tr><td align>reference</td>
-              <td align><b-tag size="is-medium">{{props.row[col.field].reference.toFixed(1)}} {{col.unit}}</b-tag></td></tr>
+            <tr><td align class="lighttext">reference</td>
+              <td align><b-tag>{{props.row[col.field].reference.toFixed(1)}} {{col.unit}}</b-tag></td></tr>
           </table>
         </b-table-column>
       </template>

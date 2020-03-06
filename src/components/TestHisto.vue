@@ -25,6 +25,7 @@
 import { Plotly } from 'vue-plotly'
 
 import api from '@/assets/api.js';
+
 const axios = require('axios').default;
 
 export default {
@@ -120,7 +121,15 @@ export default {
           name: 'reference',
           type: 'scatter',
           x: [this.reference[field]],
-          y: [0]
+          y: [0],
+          marker: {
+            color: 'LightGreen',
+            size: 12,
+            line: {
+                color: 'MediumGreen',
+                width: 2
+            }
+          },
         });
       }
       return res;
