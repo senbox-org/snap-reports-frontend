@@ -9,8 +9,8 @@
       <b-field label="Mode">
         <b-select v-model="mode">
           <option value="val">Value</option>
-          <option value="abs">Improvements (Abs)</option>
-          <option value="rel">Improvements (Rel)</option>
+          <option v-if="reference != null" value="abs">Improvements (Abs)</option>
+          <option v-if="reference != null" value="rel">Improvements (Rel)</option>
         </b-select>
       </b-field>
     </b-field>
@@ -18,7 +18,7 @@
     <div v-for="field in histos" :key="field" class="hw">
       <Plotly :data="hist(field, mode)" :layout="layout(field, mode)"  :display-mode-bar="false"/>
     </div>
-  
+
   </section>
 </template>
 <script>

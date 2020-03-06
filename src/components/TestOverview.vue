@@ -22,12 +22,17 @@
       </div>
     </div>
     <div class="hw"  v-if="reference != undefined">
-      <b> Reference</b><br>
+      <b-tag type="is-info" size="is-medium">Reference values</b-tag><br>
       <Info tag="Updated" :value="reference.updated"/>
       <Info tag="Average duration" :value="reference.duration.toFixed(1)" unit='s'/>
       <Info tag="Average CPU time" :value="reference.cpu_time.toFixed(1)" unit='s'/>
       <Info tag="Average memory usage" :value="reference.memory_avg.toFixed(1)" unit='Mb'/>
       <Info tag="Average IO Read" :value="reference.io_read.toFixed(1)" />
+    </div>
+    <div class="hw" v-else>
+      <b-tag type="is-danger" size="is-medium">
+        No reference values
+      </b-tag>
     </div>
   </section>
 </template>
