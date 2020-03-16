@@ -2,7 +2,7 @@
   <div>
     <b-table
       :paginated="true"
-      :data="jobs.jobs"
+      :data="jobs"
       :columns="columns"
       :default-sort="['ID', 'desc']"
       hoverable
@@ -10,6 +10,9 @@
       @click="rowClicked"
     >
     </b-table>
+    <div v-show="debug">
+      {{jobs}}
+    </div>
   </div>
 </template>
 <script>
@@ -60,7 +63,7 @@ export default {
     }
   },
   props: {
-    jobs: Object
+    jobs: Array
   },
   methods: {
     rowClicked(record) {
