@@ -17,11 +17,15 @@
 </template>
 <script>
 import router from '../router'
+import api from '@/assets/api.js';
+
+const axios = require('axios').default;
 
 export default {
   name: 'JobsTable',
   data() {
     return {
+      jobs: undefined,
       columns: [
         {
           field: 'ID',
@@ -62,14 +66,16 @@ export default {
       ]
     }
   },
-  props: {
-    jobs: Array
-  },
   methods: {
     rowClicked(record) {
       router.push("/job/"+record["ID"]);
     }
-  }
+  },
+  mounted() {
+    axios
+      .get(api.call("api/job/list"))
+      .then(res =>(this.jobs = res.data));
+  },
 }
 </script>
 <style>

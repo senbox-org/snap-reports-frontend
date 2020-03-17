@@ -28,7 +28,8 @@ export default {
     return {
       blacklist: [
         'snap:testAuxdataV2',
-        'snap:randomSeed'
+        'snap:randomSeed',
+        'snap:testAuxdata'
       ],
       list: undefined,
     }

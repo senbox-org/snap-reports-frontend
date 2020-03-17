@@ -24,7 +24,8 @@ export default {
   props: {
     tag: String,
     data: Object,
-    total: Number
+    total: Number,
+    improved: Number
   },
   methods: {
     get_class: function(num) {

@@ -1,27 +1,14 @@
 <template>
   <div class="overview">
-    <JobsTable :jobs="info" />
+    <JobsTable/>
   </div>
 </template>
 
 <script>
 import JobsTable from '@/components/JobsTable.vue';
-import api from '@/assets/api.js';
-
-const axios = require('axios').default;
 
 export default {
   name: 'Overview',
-  data () {
-    return {
-      info: {}
-    }
-  },
-  mounted() {
-    axios
-      .get(api.call("api/job/list"))
-      .then(res =>(this.info = res.data));
-  },
   components: {
     JobsTable
   },

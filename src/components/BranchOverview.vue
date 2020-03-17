@@ -1,10 +1,10 @@
 <template>
   <section>
     <b-field label="Statistics">
-      <b-select v-model="sel">
-        <option value="last">Last</option>
-        <option value="last10">Last 10</option>
-        <option value="average">All</option>
+      <b-select v-model="sel" @input="update">
+        <option value="1">Last</option>
+        <option value="10">Last 10</option>
+        <option value="0">All</option>
       </b-select>
 
     </b-field>
@@ -33,13 +33,18 @@
   </section>
 </template>
 <script>
+  import api from '@/assets/api.js';
+
+  const axios = require('axios').default;
+
   export default {
     name: 'BranchOverview',
     props: {
-      data: Array
+      branch: String
     },
     data() {
       return {
+        data: undefined,
         rows: [
           {
             title: 'Total',
@@ -70,23 +75,31 @@
             status: () => undefined
           }
         ],
-        sel: 'last10'
+        sel: '10'
       }
     },
     methods: {
       total(field) {
-        const reducer = (acc, val) => acc + val[field][this.sel];
+        const reducer = (acc, val) => acc + val['res_'+field];
         return this.data.reduce(reducer, 0);
       },
 
       ref(field) {
-        const reducer = (acc, val) => acc + val[field].reference;
+        const reducer = (acc, val) => acc + val['ref_'+field];
         return this.data.reduce(reducer, 0);
       },
       improved(field) {
-        const reducer = (acc, val) => acc + (val[field][this.sel] < val[field].reference ? 1 : 0);
+        const reducer = (acc, val) => acc + (val['res_'+field] < val['ref_'+field] ? 1 : 0);
         return this.data.reduce(reducer, 0);
       },
+      update() {
+        axios
+        .get(api.call('api/branch', this.branch, 'details', this.sel))
+        .then((res) => (this.data = res.data.details));
+      }
+    }, 
+    mounted() {
+      this.update()
     }
   };
 </script>

@@ -9,14 +9,13 @@
         <b-tab-item label="Branch overview">
           <span class="lighttext">Number of jobs:</span> {{n_jobs}} <br>
           <span class="lighttext">Last execution:</span> {{last_job.timestamp_start}}  - <b> (Job <router-link :to="'/job/'+last_job.ID">#{{last_job.ID}}</router-link>)</b><br>
-          <span class="lighttext">Number of tests:</span> {{details.length}}<br>
-          <BranchOverview :data="details"/>
+          <BranchOverview :branch="id"/>
         </b-tab-item>
         <b-tab-item label="Branch details">
-          <BranchTable :data="details"/>
+          <BranchTable :branch="id"/>
         </b-tab-item>
         <b-tab-item label="Histograms">
-          <BranchHisto :data="details"/>
+          <BranchHisto :branch="id"/>
         </b-tab-item>
       </b-tabs>
     </article>
@@ -35,7 +34,6 @@
       return {
         id: this.$route.params.id,
         last_job: undefined,
-        details: undefined,
         n_jobs: 0,
       }
     },
@@ -43,9 +41,7 @@
       axios
         .get(api.call('api/branch', this.id, 'last_job'))
         .then((res) => (this.last_job = res.data));
-      axios
-        .get(api.call('api/branch', this.id, 'details'))
-        .then((res) => (this.details = res.data.details));
+      
       axios
         .get(api.call('api/branch', this.id, 'njobs'))
         .then((res) => (this.n_jobs = res.data.njobs));

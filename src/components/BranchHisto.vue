@@ -2,10 +2,10 @@
   <section>
     <b-field grouped group-multiline>
       <b-field label="Statistics">
-        <b-select v-model="stat">
-          <option value="last">Last</option>
-          <option value="last10">Last 10</option>
-          <option value="average">All</option>
+        <b-select v-model="stat"  @input="update">
+          <option value="1">Last</option>
+          <option value="10">Last 10</option>
+          <option value="0">All</option>
         </b-select>
       </b-field>
 
@@ -45,25 +45,29 @@
 </template>
 <script>
 import { Plotly } from 'vue-plotly'
+import api from '@/assets/api.js';
+
+const axios = require('axios').default;
 
 export default {
   name: 'BranchHisto',
   props: {
-    data: Array
+    branch: String
   },
   data() {
     return {
+      data: undefined,
       mode: 'rel',
-      stat: 'last10',
+      stat: '10',
     }
   },
   methods: {
-    hist(field, mode, stat){
+    hist(field, mode){
       var xs;
       if (mode == 'abs') {
-        xs = this.data.map(x =>(x[field][stat] - x[field].reference))
+        xs = this.data.map(x =>(x['res_'+field] - x['ref_'+field]))
       } else {
-        xs = this.data.map(x =>(-100 * (x[field][stat] - x[field].reference)/x[field].reference))
+        xs = this.data.map(x =>(-100 * (x['res_'+field] - x['ref_'+field])/x['ref_'+field]))
       }
       console.log(xs);
       return [{
@@ -86,7 +90,15 @@ export default {
           title: unit_title
         }
       }
+    },
+    update() {
+      axios
+      .get(api.call('api/branch', this.branch, 'details', this.stat))
+      .then((res) => (this.data = res.data.details));
     }
+  }, 
+  mounted() {
+    this.update()
   },
   components: {
     Plotly
