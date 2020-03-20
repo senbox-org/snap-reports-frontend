@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="tile is-ancestor">
     <div class="tile is-vertical">
       <div class="tile">
@@ -30,11 +31,16 @@
       </div>
     </div>
   </div>
+  <article class="notification">
+    <BranchDashes branch="master"/>
+  </article>
+</div>
 </template>
 <script>
 import Info from '@/components/Info.vue';
 import StatLine from '@/components/StatLine.vue'
 import BranchStatus from '@/components/BranchStatus.vue'
+import BranchDashes from '@/components/BranchDashes.vue'
 
 import api from '@/assets/api.js';
 
@@ -98,9 +104,10 @@ export default {
   components: {
     Info,
     StatLine,
-    BranchStatus
+    BranchStatus,
+    BranchDashes
   }
-}
+};
 </script>
 <style>
 .job{
