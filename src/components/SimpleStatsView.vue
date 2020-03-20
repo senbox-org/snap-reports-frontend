@@ -11,7 +11,7 @@
       <circle cx="106" cy="30" r="4" :class="get_class(data.last10)"/>
       <circle cx="126" cy="30" r="4" :class="get_class(data.average)"/>
       <g transform="translate(0 40)">
-        <StatLine :total="total" :passed="improved"/>
+        <StatLine :total="total" :passed="improved" :warning="total-(improved+regressed)"/>
       </g>
     </svg>
   </span>
@@ -25,7 +25,8 @@ export default {
     tag: String,
     data: Object,
     total: Number,
-    improved: Number
+    improved: Number,
+    regressed: Number
   },
   methods: {
     get_class: function(num) {
@@ -47,7 +48,7 @@ export default {
   components: {
     StatLine
   }
-}
+};
 </script>
 <style>
   .tinytext {

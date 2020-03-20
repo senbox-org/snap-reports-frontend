@@ -8,18 +8,21 @@
         :data="stats.cpu"
         :total="stats.count"
         :improved="stats.improved.cpu"
+        :regressed="stats.regressed.cpu"
       />
       <SimpleStatsView
         tag="Memory"
         :data="stats.memory"
         :total="stats.count"
         :improved="stats.improved.memory"
+        :regressed="stats.regressed.memory"
       />
       <SimpleStatsView
         tag="IO Read"
         :data="stats.read"
         :total="stats.count"
         :improved="stats.improved.read"
+        :regressed="stats.regressed.read"
       />
       <SimpleStatsLegend/>
     </div>
@@ -56,5 +59,5 @@
       SimpleStatsLegend,
       Info
     }
-  }
+  };
 </script>
