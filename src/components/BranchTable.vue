@@ -41,7 +41,7 @@ import api from '@/assets/api.js';
 
 const axios = require('axios').default;
 
-import router from '../router'
+import router from '@/router'
 
 export default {
   name: "BranchTable",
@@ -84,14 +84,14 @@ export default {
     },
     update() {
         axios
-        .get(api.call('api/branch', this.branch, 'details', this.sel))
-        .then((res) => (this.data = res.data.details));
+          .get(api.call('api/branch', this.branch, 'details', 10))
+          .then((res) => (this.data = res.data.details));
       }
   }, 
   mounted() {
     this.update()
   }
-}
+};
 </script>
 <style>
 
