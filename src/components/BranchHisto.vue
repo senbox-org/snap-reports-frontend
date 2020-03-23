@@ -69,7 +69,6 @@ export default {
       } else {
         xs = this.data.map(x =>(-100 * (x['res_'+field] - x['ref_'+field])/x['ref_'+field]))
       }
-      console.log(xs);
       return [{
         x: xs,
         type: 'histogram'
