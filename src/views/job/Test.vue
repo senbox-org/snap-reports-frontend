@@ -52,6 +52,11 @@
           </template>
         </b-table>
       </b-tab-item>
+      <b-tab-item v-if="data.output != ''" label="Output">
+        <code>
+          {{data.output}}
+        </code>
+      </b-tab-item>
       <b-tab-item label="Profile">
         <div>
           <Plotly :data="profiles()" :layout="layout" :display-mode-bar="false"/>
@@ -423,7 +428,7 @@
     props: {
       branch: String
     }
-  }
+  };
 </script>
 <style>
 .bm_xs {

@@ -57,7 +57,7 @@ export default {
 	},
 	methods: {
 		status(test) {
-			if (test.result == 'FAILED')
+			if (test.result == 'FAILED' || test.result == 'CRASHED')
 				return -1;
 			if (this.stat == 'multi')
 				return (test.cpu_time + test.memory_avg + test.io_read) / 3

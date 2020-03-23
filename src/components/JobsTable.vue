@@ -76,7 +76,7 @@ export default {
       .get(api.call("api/job/list"))
       .then(res =>(this.jobs = res.data));
   },
-}
+};
 </script>
 <style>
 
@@ -86,5 +86,8 @@ export default {
 }
 .FAILED {
   background-color: rgba(255, 125, 125, 0.2);
+}
+.CRASHED {
+  background-color: rgba(255, 125, 125, 0.2); 
 }
 </style>
