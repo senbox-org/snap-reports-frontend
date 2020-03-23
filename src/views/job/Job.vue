@@ -13,15 +13,16 @@
       <section>
         <b-tabs v-model="activeTab">
           <b-tab-item label="Overview">
-            <div v-for="testset in data" :key="testset.name" class="inline">
-              {{testset.name}}
-                <div class="compress">
-                <b-tooltip  v-for="test in testset.tests" :key="test.ID" :label="test.name">
-                  <button :class="testClass(test)" @click="go_to_test(test)">
-                  </button>
-                </b-tooltip>  
+            <b-tooltip v-for="testset in data" :key="testset.name" :label="testset.name" position="is-bottom" class="compress light" type="is-dark" size="is-small">
+              <div  class="inline">
+                  <div class="compress">
+                  <b-tooltip  v-for="test in testset.tests" :key="test.ID" :label="test.name">
+                    <button :class="testClass(test)" @click="go_to_test(test)">
+                    </button>
+                  </b-tooltip>  
+                </div>
               </div>
-            </div>
+            </b-tooltip>
             <br>
             <div class="legend">
               <b>Legend</b><br>
@@ -248,14 +249,20 @@ export default {
 <style>
 .inline {
   display: inline-block;
-  margin-right: 15px;
-  margin-bottom: 10px;
-  padding: 5px 10px 10px 10px;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  padding: 4px 8px 8px 8px;
   background-color: #fff;
   border: 1px solid rgba(0,0,0, 0.1);
-  border-radius: 5px;
+  border-radius: 3px;
   font-family: Helvetica Neue, Arial, sans-serif;
   font-weight: bold;
   font-size: 12px;
+}
+
+.light {
+  font-family: Helvetica Neue, Arial, sans-serif;
+  font-weight: 200;
+  font-size: 10px;
 }
 </style>
