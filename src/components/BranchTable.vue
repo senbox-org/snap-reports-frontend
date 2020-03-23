@@ -84,7 +84,7 @@ export default {
     },
     update() {
         axios
-          .get(api.call('api/branch', this.branch, 'details', 10))
+          .get(api.call('api/branch', this.branch, 'details', this.sel))
           .then((res) => (this.data = res.data.details));
       }
   }, 
