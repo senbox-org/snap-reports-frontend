@@ -12,7 +12,31 @@
       </p>
       <section>
         <b-tabs v-model="activeTab">
-          <b-tab-item label="Summary">
+          <b-tab-item label="Overview">
+            <div v-for="testset in data" :key="testset.name" class="inline">
+              {{testset.name}}
+                <div class="compress">
+                <b-tooltip  v-for="test in testset.tests" :key="test.ID" :label="test.name">
+                  <button :class="testClass(test)" @click="go_to_test(test)">
+                  </button>
+                </b-tooltip>  
+              </div>
+            </div>
+            <br>
+            <div class="legend">
+              <b>Legend</b><br>
+              <div class="sublegend compress">
+                <button class="dash dleg test_failed"></button> <span class="dlabel">Test failed</span>
+                <button class="dash dleg test_no_reference"></button> <span class="dlabel">No reference value</span>
+                <button class="dash dleg test_severe_degression"></button><span class="dlabel"> Severe degression (&lt;-8%)</span>
+                <button class="dash dleg test_degression"></button><span class="dlabel"> Degression (&lt;-3%)</span>
+                <button class="dash dleg test_no_change"></button><span class="dlabel"> No changes (&lt;+3%)</span>
+                <button class="dash dleg test_improvement"></button><span class="dlabel"> Improvement (&lt;+8%)</span>
+                <button class="dash dleg test_severe_improvement"></button><span class="dlabel"> Severe improvement(&gt;+8%)</span>
+              </div>
+            </div>
+          </b-tab-item>
+          <b-tab-item label="Performance Summary">
             <element>
               <JobSummaryItem
                 v-for="(field, index) in fulljob.fields"
@@ -38,6 +62,7 @@ import Info from '@/components/Info.vue';
 import StatLine from '@/components/StatLine.vue';
 import JobTable from '@/components/JobTable.vue';
 import JobSummaryItem from '@/components/JobSummaryItem.vue';
+import router from '@/router'
 
 import api from '@/assets/api.js';
 
@@ -91,6 +116,41 @@ export default {
         val = val[keys[k]];
       }
       return val;
+    },
+    status(test) {
+      if (test.result.tag == 'FAILED' || test.result.tag == 'CRASHED')
+        return -1;
+      if (test.reference == null) {
+        return -2;
+      }
+      return (test.profile.cpu_time/test.reference.cpu_time + test.profile.memory_avg/test.reference.memory_avg + test.profile.io_read/test.reference.io_read) / 3
+    },
+    testClass(test) {
+      let baseClass = 'dash ';
+      let value = this.status(test);
+      if (value == -1) {
+        return baseClass + 'test_failed';
+      }
+      if (value == -2) {
+        return baseClass + 'test_no_reference'
+      }
+      let rel_value = (1 - value)*100;
+      if (rel_value >= 8) {
+        return baseClass + 'test_severe_improvement';
+      } 
+      if (rel_value > 3){
+        return baseClass+ 'test_improvement';
+      }
+      if (rel_value >= -3) {
+        return baseClass + 'test_no_change';
+      }
+      if (rel_value >= -8) {
+        return baseClass + 'test_degression'
+      } 
+      return baseClass + 'test_severe_degression';
+    },
+    go_to_test(test){
+      router.push("/job/"+this.id+"/test/"+test.ID+"?branch="+this.branch);
     },
     prepare_data() {
       var rows = []
@@ -182,6 +242,20 @@ export default {
       this.fulljob = fulljob;
     }
   },
-}
+};
 
 </script>
+<style>
+.inline {
+  display: inline-block;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  padding: 5px 10px 10px 10px;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0, 0.1);
+  border-radius: 5px;
+  font-family: Helvetica Neue, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+}
+</style>

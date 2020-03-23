@@ -95,13 +95,16 @@ export default {
   background-color: #4CAF50; /* Green */
   border: 1px solid rgba(0,0,0,0.2);
   color: white;
-  padding: 10px 10px;
+  padding: 8px 8px;
   margin: 0px;
   max-height: 12px;
   max-width: 12px;
 }
 .test_failed {
 	background-color: #666;
+}
+.test_no_reference{
+	background-color: #4C96AF;
 }
 .test_severe_degression {
 	background-color: red;
@@ -133,7 +136,7 @@ export default {
 }
 
 .dleg {
-	padding: 10px 10px;
+	padding: 8px 8px;
 	vertical-align: middle;
 }
 
@@ -152,5 +155,6 @@ export default {
 	padding-top: 10px;
 	font-family: Helvetica Neue, Arial, sans-serif;
 	font-weight: 200;
+	font-size: 14px;
 }
 </style>
