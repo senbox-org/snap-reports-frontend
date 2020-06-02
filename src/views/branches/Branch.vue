@@ -3,9 +3,7 @@
     <article>
       <p class="subtitle">branch</p>
       <p class="title">{{id}}</p>
-
       <b-tabs card>
-
         <b-tab-item label="Branch overview">
           <span class="lighttext">Number of jobs:</span> {{n_jobs}} <br>
           <span class="lighttext">Last execution:</span> {{last_job.timestamp_start}}  - <b> (Job <router-link :to="'/job/'+last_job.ID">#{{last_job.ID}}</router-link>)</b><br>

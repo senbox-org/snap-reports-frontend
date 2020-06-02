@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Jobs from '@/views/Jobs.vue'
 import Branches from '@/views/Branches.vue'
 import Branch from '@/views/branches/Branch.vue'
+import Compare from '@/views/branches/Compare.vue'
 import Job from '@/views/job/Job.vue'
 import JobTest from '@/views/job/Test.vue'
 import Home from '@/views/Home.vue'
@@ -42,6 +43,11 @@ const routes = [
     path: '/branch/:id',
     name: 'Branch',
     component: Branch,
+  },
+  {
+    path: '/branch/compare/:tag_a/:tag_b',
+    name: 'Compare',
+    component: Compare,
   },
   {
     path: '/tests',
