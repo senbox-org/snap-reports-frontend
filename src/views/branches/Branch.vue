@@ -2,7 +2,7 @@
   <div class="notification">
     <article>
       <p class="subtitle">branch</p>
-      <p class="title">{{id}}</p>
+      <p class="title">{{id}} <b-button @click="compare()">Compare</b-button></p>
       <b-tabs card>
         <b-tab-item label="Branch overview">
           <span class="lighttext">Number of jobs:</span> {{n_jobs}} <br>
@@ -45,11 +45,13 @@
 
   import api from '@/assets/api.js';
   import { Plotly } from 'vue-plotly'
+  import router from '@/router'
 
   import BranchDashes from '@/components/BranchDashes.vue';
   import BranchTable from '@/components/BranchTable.vue';
   import BranchOverview from '@/components/BranchOverview.vue';
   import BranchHisto from '@/components/BranchHisto.vue';
+  import BranchList from '@/components/BranchList.vue';
 
   export default {
     data() {
@@ -79,6 +81,20 @@
       this.update()
     },
     methods: {
+      compare() {
+        this.$buefy.modal.open({
+          parent: this,
+          component: BranchList,
+          hasModalCard: true,
+          trapFocus: true,
+          events: {
+            'selectBranchEvent': value => {
+              let url = "/branch/compare/"+this.id+'/'+value;
+              router.push(url);
+            }
+          }
+        })
+      },
       update() {
         axios
           .get(api.call('api/branch', this.id,'history', this.field, this.mode))
