@@ -48,10 +48,10 @@
             <span class="lighttext">N. of executions: {{props.row.br_b_count}}</span>
           </b-table-column>
           <b-table-column field="diff_abs" label="Absolute difference" sortable numeric>
-            {{ props.row.diff_abs}}<br>
+            {{ props.row.diff_abs.toFixed(1)}} {{units[field]}}<br>
           </b-table-column>
           <b-table-column field="diff_rel" label="Relative difference" sortable numeric>
-            {{ props.row.diff_rel}}%<br>
+            {{ props.row.diff_rel.toFixed(1)}}%<br>
           </b-table-column>
         </template>
       </b-table>
