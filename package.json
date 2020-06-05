@@ -14,9 +14,12 @@
     "node-sass": "^4.13.1",
     "plotly.js": "^1.54.1",
     "string-format": "^2.0.0",
+    "vis": "^4.21.0-EOL",
     "vue": "^2.6.11",
     "vue-plotly": "^1.1.0",
-    "vue-router": "^3.1.6"
+    "vue-router": "^3.1.6",
+    "vue-vis-network": "^1.0.2",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",
