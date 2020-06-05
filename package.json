@@ -12,7 +12,7 @@
     "buefy": "^0.8.12",
     "core-js": "^3.6.4",
     "node-sass": "^4.13.1",
-    "plotly.js": "^1.52.2",
+    "plotly.js": "^1.54.1",
     "string-format": "^2.0.0",
     "vue": "^2.6.11",
     "vue-plotly": "^1.1.0",
