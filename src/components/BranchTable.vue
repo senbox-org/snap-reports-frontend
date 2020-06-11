@@ -9,8 +9,6 @@
 
     </b-field>
     <b-table
-    paginated
-    per-page="8"
     :data="data"
     @click="open"
     :default-sort="['test.ID', 'asc']"
