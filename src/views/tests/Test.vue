@@ -3,7 +3,7 @@
     <article>
       <p class="subtitle">Test Set: {{test.testset}}</p>
       <p class="title">{{test.name}} (#{{test.ID}})</p>
-      <div class="inline trsp_bg  trsp_bord"> 
+      <div class="test_desc_inline trsp_bg  trsp_bord"> 
         <Info tag="Author" :value="test.author"/>
         <Info tag="Frequency" :value="test.frequency"/>
         <Info tag="Description" :value="test.description"/>
@@ -14,13 +14,13 @@
         <span class="indent lighttext">Date: {{last_job.timestamp_start}}</span><br>
         <span class="indent lighttext">Execution summary: <router-link :to="'/job/'+last_job.ID+'/test/'+test.ID+'?branch='">#{{last_job.ID}}/{{test.ID}}</router-link></span>
       </div>
-      <div class="inline trsp_bg">
+      <div class="test_desc_inline trsp_bg">
           <network ref="network"
           :nodes="nodes"
           :edges="edges"
           :options="options">
           </network>
-      </div><br class="clearBoth">
+      </div><br class="test_desc_clearBoth">
       <b-tabs>
         <b-tab-item label="Overview">
           <TestOverview :test="id"/>
@@ -131,8 +131,8 @@ export default {
 };
 </script>
 <style>
-div.inline { float:left; width: 49%;}
-.clearBoth { clear:both; }
+div.test_desc_inline { float:left; width: 49%;}
+.test_desc_clearBoth { clear:both; }
 .trsp_bg {
   background: rgba(0,0,0,0);
 }
