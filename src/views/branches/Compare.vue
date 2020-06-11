@@ -31,6 +31,7 @@
       <b-table
       :data="value"
       :default-sort="['test_ID', 'asc']"
+      @click="(row) => go_to_test(row.test_ID)"
       hoverable>
         <template slot-scope="props">
           <b-table-column field="test_ID" label="ID" sortable numeric>
@@ -95,6 +96,9 @@
 
     },
     methods: {
+      go_to_test(test){
+        router.push("/test/"+test);
+      },
       update(){
         let fields_var = this.field;
         if (this.filters.length) {
