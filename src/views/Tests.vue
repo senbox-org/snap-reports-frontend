@@ -5,8 +5,6 @@
       :data="tests"
       :columns="columns"
       @click="open"
-      per-page="10"
-      paginated
       hoverable>
       </b-table>
     </article>
