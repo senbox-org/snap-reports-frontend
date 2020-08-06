@@ -5,6 +5,7 @@
 		<b-field label="Field">
 			<b-select v-model="stat">
 				<option value="multi">All stats</option>
+				<option value="duration">Duration</option>
 				<option value="cpu_time">CPU Time</option>
 				<option value="memory_avg">Memory</option>
 				<option value="io_read">IO Read</option>		
@@ -60,7 +61,7 @@ export default {
 			if (test.result == 'FAILED' || test.result == 'CRASHED')
 				return -1;
 			if (this.stat == 'multi')
-				return (test.cpu_time + test.memory_avg + test.io_read) / 3
+				return (test.duration + test.cpu_time + test.memory_avg + test.io_read) / 4
 			return test[this.stat];
 		},
 		testClass(test) {
