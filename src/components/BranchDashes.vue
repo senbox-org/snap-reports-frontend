@@ -47,7 +47,7 @@ export default {
 	data() {
 		return {
 			details: undefined,
-			stat: 'multi'
+			stat: 'duration'
 		}
 	},
 	mounted() {
