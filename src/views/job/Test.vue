@@ -53,9 +53,7 @@
         </b-table>
       </b-tab-item>
       <b-tab-item v-if="data.output != ''" label="Output">
-        <code>
-          {{data.output}}
-        </code>
+        <code class="gpt_output" v-html="output()"></code>
       </b-tab-item>
       <b-tab-item label="Profile">
         <div>
@@ -329,6 +327,9 @@
           }
         ]
       },
+      output() {
+        return this.data.output.split("\n").join("<br>")
+      },
       hist(field) {
         if (this.history[field] == undefined) {
           return [];
@@ -476,4 +477,8 @@
   margin-top: 0.5em;
 }
 
+.notification .gpt_output {
+  background: transparent;
+  color: #333;
+}
 </style>

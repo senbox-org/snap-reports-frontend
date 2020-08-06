@@ -1,18 +1,14 @@
 <template>
-    <div class="tile is-ancestor">
-      <div class="tile">
-        <div v-for="(branch, index) in list" :key="index">
-          <div v-if="blacklist.indexOf(branch.name) < 0" class="tile is-parent">
-            <article class="tile is-child notification">
-              <p class="subtitle">branch</p>
-              <p class="title"><router-link :to="'/branch/'+branch.name.split(':')[1]">{{branch.name.split(':')[1]}}</router-link></p>
-              <p class="job">
-                <BranchStatus :branch="branch.name.split(':')[1]"/>
-              </p>
-            </article>
-          </div>
-        </div>
-      </div>
+    <div class="branch_container">
+      <span v-for="(branch, index) in list" :key="index" >
+        <article v-if="blacklist.indexOf(branch.name) < 0" class="branch notification">
+          <p class="subtitle">branch</p>
+          <p class="title"><router-link :to="'/branch/'+branch.name.split(':')[1]">{{branch.name.split(':')[1]}}</router-link></p>
+          <p class="job">
+            <BranchStatus :branch="branch.name.split(':')[1]"/>
+          </p>
+        </article>
+      </span>
     </div>
 </template>
 
@@ -45,11 +41,20 @@ export default {
         obj.list = res.data.branches;
       });
   }
-}
+};
 </script>
 <style scoped>
 .branches {
   margin: 0;
   padding: 0;
+}
+.branch_container {
+  padding: 5px;
+}
+.branch {
+  width: 250pt;
+  float:left;
+  margin: 5px;
+  display: inline-block;
 }
 </style>

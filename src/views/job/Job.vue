@@ -215,7 +215,7 @@ export default {
           row.memory_avg += test.profile.memory_avg;
           row.cpu_time += test.profile.cpu_time;
           row.io_read += test.profile.io_read;
-          if (test.result.tag != 'sUCCESS') {
+          if (test.result.tag != 'SUCCESS') {
             row.result = 'FAILED';
           } else {
             row.passed ++;

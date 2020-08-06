@@ -1,8 +1,6 @@
 <template>
 <div>
   <b-table
-  paginated
-  per-page="10"
   :data="data"
   :default-sort="['name', 'asc']"
   :row-class="(row, index) => (row.result != 'SUCCESS' ? 'FAILED' : undefined)"
