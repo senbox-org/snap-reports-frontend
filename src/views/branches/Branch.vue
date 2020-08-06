@@ -97,7 +97,7 @@
       },
       update() {
         axios
-          .get(api.call('api/branch', this.id,'history', this.field, this.mode))
+          .get(api.call('api/branch', this.id,'history/scheduled', this.field, this.mode))
           .then((res) => (this.history = res.data))
       },
       history_plot() {
