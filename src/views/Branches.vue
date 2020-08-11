@@ -3,9 +3,9 @@
       <span v-for="(branch, index) in list" :key="index" >
         <article v-if="blacklist.indexOf(branch.name) < 0" class="branch notification">
           <p class="subtitle">branch</p>
-          <p class="title"><router-link :to="'/branch/'+branch.name.split(':')[1]">{{branch.name.split(':')[1]}}</router-link></p>
+          <p class="title"><router-link :to="'/branch/'+branch.name">{{branch.name}}</router-link></p>
           <p class="job">
-            <BranchStatus :branch="branch.name.split(':')[1]"/>
+            <BranchStatus :branch="branch.name"/>
           </p>
         </article>
       </span>
