@@ -100,7 +100,7 @@ export default {
       .get(api.call('api/job', this.id))
       .then(function(res){
         obj.job = res.data;
-        obj.branch= res.data.dockerTag.name.split(':')[1];
+        obj.branch = res.data.dockerTag.name;
       });
     axios
       .get(api.call('api/job', this.id, 'summary/testsets'))
