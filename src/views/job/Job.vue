@@ -124,7 +124,7 @@ export default {
       if (test.reference == null) {
         return -2;
       }
-      return (test.profile.cpu_time/test.reference.cpu_time + test.profile.memory_avg/test.reference.memory_avg + test.profile.io_read/test.reference.io_read) / 3
+      return test.profile.duration/test.reference.duration
     },
     testClass(test) {
       let baseClass = 'dash ';
