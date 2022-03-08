@@ -54,6 +54,9 @@
           <b-table-column field="diff_rel" label="Relative difference" sortable numeric>
             {{ props.row.diff_rel.toFixed(1)}}%<br>
           </b-table-column>
+          <b-table-column field="author" label="Author" sortable>
+            {{ props.row.author}}<br>
+          </b-table-column>
         </template>
       </b-table>
     </article>
