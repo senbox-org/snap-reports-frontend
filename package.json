@@ -8,7 +8,7 @@
     "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "buefy": "^0.9.23",
     "vue": "^2.7.14",
     "vue-plotly": "^1.1.0",
@@ -25,7 +25,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "sass": "^1.62.0",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^10.4.1",
     "vue-template-compiler": "^2.7.14",
     "vuetify-loader": "^1.9.2"
   },
@@ -48,6 +48,6 @@
     "last 2 versions"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=14.15"
   }
 }
