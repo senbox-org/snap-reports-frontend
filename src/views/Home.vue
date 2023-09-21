@@ -6,7 +6,7 @@
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
             <p class="subtitle">last GPT test job</p>
-            <p class="title">{{job.jobnum}} (<router-link :to="`/job/${job.ID}`">#{{ job.ID }}</router-link>)</p>
+            <p class="title">{{job?.jobnum}} (<router-link :to="`/job/${job?.ID}`">#{{ job?.ID }}</router-link>)</p>
             <p class="job">
               <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
             </p>
@@ -93,9 +93,9 @@ export default {
   },
   methods: {
     getvalue: function(obj, key) {
-      var val = obj;
-      var keys = key.split('.');
-      for (var k in keys){
+      let val = obj;
+      const keys = key.split('.');
+      for (let k in keys){
         val = val[keys[k]];
       }
       return val;

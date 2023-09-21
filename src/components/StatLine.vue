@@ -36,11 +36,11 @@ export default {
       if (this.passed + this.warning == this.total) {
         return "99%";
       }
-      var x =this.passed + this.warning / 2;
+      const x =this.passed + this.warning / 2;
       return Math.round(x/this.total * 100) + "%";
     },
     failed() {
-      var num = this.total - this.passed;
+      let num = this.total - this.passed;
       if (this.warning != undefined)
         num -= this.warning;
       return num;

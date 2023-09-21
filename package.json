@@ -1,39 +1,33 @@
 {
   "name": "snap-reports",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "buefy": "^0.8.12",
-    "core-js": "^3.6.4",
-    "node-sass": "^4.13.1",
-    "package.json": "^2.0.1",
-    "plotly.js": "^1.54.1",
-    "string-format": "^2.0.0",
-    "vis": "^4.21.0-EOL",
-    "vue": "^2.6.11",
+    "axios": "^0.27.2",
+    "buefy": "^0.9.23",
+    "vue": "^2.7.14",
     "vue-plotly": "^1.1.0",
     "vue-router": "^3.1.6",
     "vue-vis-network": "^1.0.2",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.5.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-plugin-router": "^4.2.2",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-plugin-babel": "~4.5.18",
+    "@vue/cli-plugin-eslint": "~4.5.19",
+    "@vue/cli-plugin-router": "^4.5.19",
+    "@vue/cli-service": "~4.5.19",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
-    "sass": "^1.19.0",
-    "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
+    "sass": "^1.62.0",
+    "sass-loader": "^10.4.1",
+    "vue-template-compiler": "^2.7.14",
+    "vuetify-loader": "^1.9.2"
   },
   "eslintConfig": {
     "root": true,
@@ -52,5 +46,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "engines": {
+    "node": ">=14.15"
+  }
 }

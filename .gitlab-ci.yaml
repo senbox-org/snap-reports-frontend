@@ -1,0 +1,2 @@
+include:
+  - 'https://gitlab.com/senbox-org/snap-reports-backend/raw/master/.gitlab-ci.yml'

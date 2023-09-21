@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snap-report-frontend-deployment
+  labels:
+    app: snap-report-frontend-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: snap-report-frontend-app
+  template:
+    metadata:
+      labels:
+        app: snap-report-frontend-app
+    spec:
+      containers:
+      - name: snap-report-frontend-app-deployment
+        image: snap-report-frontend:latest
+        resources:
+          requests:
+            cpu: "100m"
+        ports:
+        - containerPort: 8080

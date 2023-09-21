@@ -101,7 +101,7 @@ export default {
       if (this[field] == undefined) {
         return []
       }
-      var xs = []
+      let xs = []
       if (mode == 'abs') {
         xs = this[field].map(x => (x - this.reference[field]))
       } else if (mode == 'rel') {
@@ -109,7 +109,7 @@ export default {
       } else {
         xs = this[field];
       }
-      var res =  [
+      let res =  [
         {
           name: 'data distribution',
           type: 'histogram',
