@@ -2,7 +2,7 @@
   <div class="notification">
     <article>
       <p class="subtitle">GPT test job summary</p>
-      <p class="title">{{job.jobnum}} (#{{job.ID}})</p>
+      <p class="title">{{job?.jobnum}} (#{{job?.ID}})</p>
       <b>SNAP version:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
       <p class="stats">

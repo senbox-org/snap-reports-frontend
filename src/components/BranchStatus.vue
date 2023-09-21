@@ -1,28 +1,28 @@
 <template>
   <div>
-    <Info tag="Number of tests" :value="stats.count"/>
+    <Info tag="Number of tests" :value="stats?.count"/>
     <b>Improvements</b><br>
     <div class="branchstatus">
       <SimpleStatsView
         tag="CPU Time"
-        :data="stats.cpu"
-        :total="stats.count"
-        :improved="stats.improved.cpu"
-        :regressed="stats.regressed.cpu"
+        :data="stats?.cpu"
+        :total="stats?.count"
+        :improved="stats?.improved?.cpu"
+        :regressed="stats?.regressed?.cpu"
       />
       <SimpleStatsView
         tag="Memory"
-        :data="stats.memory"
-        :total="stats.count"
-        :improved="stats.improved.memory"
-        :regressed="stats.regressed.memory"
+        :data="stats?.memory"
+        :total="stats?.count"
+        :improved="stats?.improved?.memory"
+        :regressed="stats?.regressed?.memory"
       />
       <SimpleStatsView
         tag="IO Read"
-        :data="stats.read"
-        :total="stats.count"
-        :improved="stats.improved.read"
-        :regressed="stats.regressed.read"
+        :data="stats?.read"
+        :total="stats?.count"
+        :improved="stats?.improved?.read"
+        :regressed="stats?.regressed?.read"
       />
       <SimpleStatsLegend/>
     </div>
