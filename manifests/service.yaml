@@ -9,7 +9,8 @@ spec:
    app: snap-report-frontend-app
  ports:
    # Port Map
- - port: 80
+ - name: http
+   port: 80
    targetPort: 8080
    protocol: TCP
  type: ClusterIP
