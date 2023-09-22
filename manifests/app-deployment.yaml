@@ -6,7 +6,7 @@ metadata:
   labels:
     app: snap-report-frontend-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: snap-report-frontend-app
@@ -17,8 +17,11 @@ spec:
     spec:
       containers:
       - name: snap-report-frontend-app-deployment
-        image: snap-report-frontend:latest
+        image: docker-hosted.snap-ci.ovh/snap-reports-frontend:latest
         resources:
+          limits:
+            cpu: "200m"
+            memory: "4Gi"
           requests:
             cpu: "100m"
         ports:

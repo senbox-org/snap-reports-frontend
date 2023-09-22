@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    app: snap-report-frontend-app
+  name: snap-reports
+  namespace: snap-report
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: reports.snap-ci.ovh
+    http:
+      paths:
+      - backend:
+          service:
+            name: snap-report-frontend-service
+            port:
+              name: snap-reports
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - reports.snap-ci.ovh
+    secretName: reports.snap-ci.ovh-tls
