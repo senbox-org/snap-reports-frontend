@@ -17,7 +17,7 @@ spec:
           service:
             name: snap-report-frontend-service
             port:
-              name: snap-reports
+              name: http
         path: /
         pathType: Prefix
   tls:
