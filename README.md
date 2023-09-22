@@ -26,8 +26,9 @@ npm run lint
 ### Deploy to k8s
 
 ```sh
-kubectl apply -f manifests/deployment.yaml
-kubectl apply -f manifests/service.yaml
+kubectl apply -f manifests/deployment.yaml -n snap-report
+kubectl apply -f manifests/service.yaml -n snap-report
+kubectl apply -f manifests/ingress.yaml -n snap-report
 ```
 
 ### Customize configuration

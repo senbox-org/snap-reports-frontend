@@ -25,4 +25,4 @@ spec:
           requests:
             cpu: "100m"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
