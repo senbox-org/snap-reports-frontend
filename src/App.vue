@@ -4,7 +4,7 @@
         <template slot="brand">
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                 <img
-                    src="http://step.esa.int/main/wp-content/uploads/2015/11/snap_survey_125.jpg"
+                    src="https://step.esa.int/main/wp-content/uploads/2015/11/snap_survey_125.jpg"
                     alt="SNAP"
                 >
             </b-navbar-item>

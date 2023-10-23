@@ -9,7 +9,7 @@
   custom-detail-row
   detail-key="name"
   show-detail-icon>
-    <template slot-scope="props">
+    <template slot-scope="props" v-if="props.row">
       <b-table-column field="name" label="Name" sortable>
         {{ props.row.name }}
       </b-table-column>
@@ -104,7 +104,7 @@
     },
     methods: {
       showInfo(test_id) {
-        var branch =this.branch.split(':')[1];
+        let branch =this.branch.split(':')[1];
 
         router.push({path: this.job_id+"/test/"+test_id, query:{branch:branch}});
       },

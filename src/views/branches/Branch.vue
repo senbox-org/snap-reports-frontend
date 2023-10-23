@@ -1,12 +1,12 @@
 <template>
   <div class="notification">
-    <article>
+    <article v-if="id">
       <p class="subtitle">branch</p>
       <p class="title">{{id}} <b-button @click="compare()">Compare</b-button></p>
       <b-tabs card>
         <b-tab-item label="Branch overview">
           <span class="lighttext">Number of jobs:</span> {{n_jobs}} <br>
-          <span class="lighttext">Last execution:</span> {{last_job.timestamp_start}}  - <b> (Job <router-link :to="'/job/'+last_job.ID">#{{last_job.ID}}</router-link>)</b><br>
+          <span v-if="last_job" class="lighttext">Last execution:</span> {{last_job?.timestamp_start}}  - <b> (Job <router-link :to="'/job/'+last_job?.ID">#{{last_job?.ID}}</router-link>)</b><br>
           <BranchOverview :branch="id"/>
           <br>
           <p class="subcategory">Branch History</p>
@@ -61,7 +61,7 @@
         last_job: undefined,
         n_jobs: 0,
         field: "cpu_time",
-        mode: "5",
+        mode: "1",
         title: {
           cpu_time: "CPU Time",
           memory_avg: "Memory",
@@ -103,7 +103,7 @@
       history_plot() {
         if (this.history == undefined || this.history.date.length == 0)
           return [];
-        var res = [
+        let res = [
         {
           name: 'history',
           x: this.history.date,

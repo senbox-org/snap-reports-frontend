@@ -7,10 +7,10 @@
           <article class="tile is-child notification">
             <p class="subtitle">last GPT test job</p>
             <p class="title">{{job?.jobnum}} (<router-link :to="`/job/${job?.ID}`">#{{ job?.ID }}</router-link>)</p>
-            <p class="job">
+            <p class="job" v-if="job">
               <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
             </p>
-            <p class="stats">
+            <p class="stats" v-if="summary">
               <svg width="100%" height="45">
                 <StatLine :total="summary.num_tests" :passed="summary.passed"/>
               </svg>
@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     getvalue: function(obj, key) {
-      let val = obj;
+      let val = {...obj};
       const keys = key.split('.');
       for (let k in keys){
         val = val[keys[k]];

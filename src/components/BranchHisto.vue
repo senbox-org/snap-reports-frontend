@@ -63,7 +63,11 @@ export default {
   },
   methods: {
     hist(field, mode){
-      var xs;
+        if (!this.data) {
+            this.update();
+            return [];
+        }
+      let xs;
       if (mode == 'abs') {
         xs = this.data.map(x =>(x['res_'+field] - x['ref_'+field]))
       } else {
@@ -75,7 +79,7 @@ export default {
       }];
     },
     layout(title, unit) {
-      var unit_title = ""
+      let unit_title = ""
       if (this.mode == 'abs')
         unit_title = unit + '<br> (smaller is better)'
       else
