@@ -56,7 +56,7 @@ export default {
   mounted() {
     axios
       .get(api.call('api/branch/list'))
-      .then((res) => (this.branches = this.branches.concat(res.data.branches.map(x => x.name.split(':')[1]))));
+      .then((res) => (this.branches = this.branches.concat(res.data.branches.map(x => x.name))));
     axios
       .get(api.call('api/test', this.test, 'summary'))
       .then((res) => (this.summary = res.data));
