@@ -1,18 +1,18 @@
 <template>
   <div class="notification">
-    <article>
+    <article v-if="job">
       <p class="subtitle">GPT test job summary</p>
       <p class="title">{{job?.jobnum}} (#{{job?.ID}})</p>
       <b>SNAP version:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <Info v-for="(field, index) in fields_job" :key="index" :tag="field.tag" :value="getvalue(job, field.id)" :class="field.status ? getvalue(job, field.id) : undefined" />
-      <p class="stats">
+      <p class="stats" v-if="summary">
         <svg width="100%" height="45">
           <StatLine :total="summary.num_tests" :passed="summary.passed"/>
         </svg>
       </p>
       <section>
         <b-tabs v-model="activeTab">
-          <b-tab-item label="Overview">
+          <b-tab-item label="Overview" v-if="data?.length">
             <b-tooltip v-for="testset in data" :key="testset.name" :label="testset.name" position="is-bottom" class="compress light" type="is-dark" size="is-small">
               <div  class="inline">
                   <div class="compress">
@@ -78,6 +78,7 @@ export default {
       job: undefined,
       summary: undefined,
       data: undefined,
+      activeTab: undefined,
       fields_job: [
         {tag: "Branch", id: "branch"},
         {tag: "Test scope", id: "testScope"},
@@ -95,7 +96,7 @@ export default {
     JobSummaryItem
   },
   mounted() {
-    var obj = this;
+    let obj = this;
     axios
       .get(api.call('api/job', this.id))
       .then(function(res){
@@ -111,9 +112,9 @@ export default {
   },
   methods: {
     getvalue(obj, key) {
-      var val = obj;
-      var keys = key.split('.');
-      for (var k in keys){
+      let val = obj;
+      let keys = key.split('.');
+      for (let k in keys){
         val = val[keys[k]];
       }
       return val;
@@ -154,8 +155,8 @@ export default {
       router.push("/job/"+this.id+"/test/"+test.ID+"?branch="+this.branch);
     },
     prepare_data() {
-      var rows = []
-      var fulljob = {
+      let rows = []
+      let fulljob = {
           total: 0,
           fields: [
             {
@@ -192,8 +193,8 @@ export default {
             }
           ]
       };
-      for (var testset in this.summary.testsets) {
-        var row = {
+      for (let testset in this.summary.testsets) {
+        let row = {
           name: testset,
           num_tests: 0,
           cpu_time: 0,
@@ -208,8 +209,8 @@ export default {
           result: 'SUCCESS',
           tests: []
         }
-        for (var id in this.summary.testsets[testset]) {
-          var test = this.summary.testsets[testset][id];
+        for (let id in this.summary.testsets[testset]) {
+          let test = this.summary.testsets[testset][id];
           row.num_tests ++;
           row.duration += test.profile.duration;
           row.memory_avg += test.profile.memory_avg;
@@ -225,10 +226,10 @@ export default {
             row.cpu_time_ref += test.reference.cpu_time;
             row.duration_ref += test.reference.duration;
             row.io_read_ref += test.reference.io_read
-            for (var i in fulljob.fields) {
-              var field = fulljob.fields[i].field;
-              var value = test.profile[field];
-              var reference = test.reference[field];
+            for (let i in fulljob.fields) {
+              let field = fulljob.fields[i].field;
+              let value = test.profile[field];
+              let reference = test.reference[field];
               fulljob.fields[i].total += value;
               fulljob.fields[i].reference += reference;
               fulljob.fields[i].improved += value < reference ? 1 : 0;

@@ -9,7 +9,7 @@
 
     </b-field>
     <b-table :data="rows">
-      <template slot-scope="props">
+      <template slot-scope="props" v-if="props.row">
         <b-table-column field="title" label="">
           <b>{{ props.row.title}}</b>
         </b-table-column>

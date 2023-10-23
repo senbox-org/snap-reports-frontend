@@ -19,31 +19,39 @@ export default {
   },
   methods: {
     passed_perc() {
-      return Math.round(this.passed/this.total * 100)+"%";
+        if (!this.passed || !this.total)
+            return 0;
+        return Math.round(this.passed/this.total * 100)+"%";
     },
     failed_perc() {
-      return Math.round(this.failed()/this.total * 100) +"%"
+        if (!this.passed || !this.total)
+            return 0;
+        return Math.round(this.failed()/this.total * 100) +"%"
     },
     failed_begin() {
-      return Math.floor((this.total-this.failed())/this.total * 100) + "%";
+        if (!this.passed || !this.total)
+            return 0;
+        return Math.floor((this.total-this.failed())/this.total * 100) + "%";
     },
     warning_perc() {
-      if (this.warning == undefined)
-        return 0;
-      return Math.round(this.warning/this.total *100) + '%';
+        if (this.warning == undefined)
+            return 0;
+        return Math.round(this.warning/this.total *100) + '%';
     },
     warn_pos() {
-      if (this.passed + this.warning == this.total) {
-        return "99%";
-      }
-      const x =this.passed + this.warning / 2;
-      return Math.round(x/this.total * 100) + "%";
+        if (this.passed + this.warning == this.total) {
+            return "99%";
+        }
+        const x = this.passed + this.warning / 2;
+        return Math.round(x/this.total * 100) + "%";
     },
     failed() {
-      let num = this.total - this.passed;
-      if (this.warning != undefined)
-        num -= this.warning;
-      return num;
+        if (!this.passed || !this.total)
+            return 0;
+        let num = this.total - this.passed;
+        if (this.warning != undefined)
+            num -= this.warning;
+        return num;
     }
   }
 };

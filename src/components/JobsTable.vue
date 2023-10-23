@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       jobs: undefined,
+      debug: undefined,
       columns: [
         {
           field: 'ID',

@@ -13,7 +13,7 @@
     @click="open"
     :default-sort="['test.ID', 'asc']"
     hoverable>
-      <template slot-scope="props">
+      <template slot-scope="props" v-if="cols.length && props.row">
         <b-table-column field="test_ID" label="ID" sortable numeric>
           {{ props.row.test_ID}}
         </b-table-column>
