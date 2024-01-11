@@ -4,6 +4,7 @@
       <b-table
       :data="tests"
       :columns="columns"
+      :loading="loading"
       @click="open"
       hoverable>
       </b-table>
@@ -20,6 +21,7 @@ export default {
   name: 'Tests',
   data() {
     return {
+      loading: false,
       tests: [],
       columns: [
         {
@@ -57,7 +59,15 @@ export default {
   mounted() {
     axios
       .get(api.call('api/test/list'))
-      .then((res) => (this.tests = res.data.tests))
+      .then((res) => {
+        this.tests = res.data.tests;
+        this.loading = false;
+      })
+      .catch((err) => {
+        this.tests = [];
+        this.loading = false;
+        console.error(err);
+      })
   },
   methods: {
     open(record) {
