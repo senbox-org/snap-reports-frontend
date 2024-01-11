@@ -34,11 +34,10 @@ export default {
     BranchStatus
   },
   mounted() {
-    var obj = this;
     axios
       .get(api.call("api/branch/list"))
-      .then(function(res){
-        obj.list = res.data.branches;
+      .then((res) => {
+        this.list = res.data.branches;
       });
   }
 };

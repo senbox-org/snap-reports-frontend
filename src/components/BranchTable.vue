@@ -10,18 +10,18 @@
     </b-field>
     <b-table
     :data="data"
+    :loading="data != undefined"
     @click="open"
     :default-sort="['test.ID', 'asc']"
     hoverable>
-      <template slot-scope="props" v-if="cols.length && props.row">
-        <b-table-column field="test_ID" label="ID" sortable numeric>
+        <b-table-column  v-slot="props" field="test_ID" label="ID" sortable numeric>
           {{ props.row.test_ID}}
         </b-table-column>
-        <b-table-column field="test_name" label="Name" sortable>
+        <b-table-column  v-slot="props" field="test_name" label="Name" sortable>
           {{ props.row.test_name}}<br>
           <span class="lighttext">N. of executions: {{props.row.num_exec}}</span>
         </b-table-column>
-        <b-table-column v-for="col in cols" :key="col.title" :label="col.title" :field="col.field+'.'+sel" centered sortable>
+        <b-table-column  v-slot="props" v-for="col in cols" :key="col.title" :label="col.title" :field="col.field+'.'+sel" centered sortable>
           <table class="compact">
             <tr><td align class="lighttext">value</td>
               <td align><b-tag  :type="getType(props.row['res_'+col.field], props.row['ref_'+col.field])">
@@ -30,7 +30,6 @@
               <td align><b-tag>{{props.row['ref_'+col.field].toFixed(1)}} {{col.unit}}</b-tag></td></tr>
           </table>
         </b-table-column>
-      </template>
     </b-table>
   </section>
 </template>
