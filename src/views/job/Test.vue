@@ -1,5 +1,6 @@
 <template>
-  <div class="notification">
+    <div class="notification">
+    <b-loading v-model="loading"></b-loading>
     <article v-if="data != undefined">
       <p class="subtitle">job <router-link :to="'/job/'+job">#{{job}}</router-link> <br> execution #{{data.ID}}</p>
       <p class="title">{{data.test.name}} (<router-link :to="`/test/${data.test.ID}`">#{{data.test.ID}}</router-link>)</p>
@@ -14,42 +15,39 @@
       <Info tag="Start" :value="data.start"/>
       <b>Branch:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <br>
+      ref: {{ [reference] }}
+      local ref: {{ [local_reference] }}
       <b-tabs cards>
       <b-tab-item label="Summary">
-        <b-table
-          :data="fields"
-          hoverable
-        >
-          <template slot-scope="props">
-            <b-table-column label="Field">
-              {{props.row.tag}}
+        <b-table :data="fields" hoverable :loading="loading">
+            <b-table-column label="Field" v-slot="props">
+              {{props.row?.tag}}
             </b-table-column>
-            <b-table-column  label="Recorded" numeric>
+            <b-table-column v-slot="props" label="Recorded" numeric>
               {{data[props.row.field]}} {{props.row.unit}}
             </b-table-column>
-            <b-table-column v-show="reference != null" label="Reference" numeric>
-              <p >
+            <b-table-column v-slot="props" v-if="reference != null" label="Reference" numeric>
+              <p v-if="props.row">
                 <b-tag size="is-medium" :type="get_type(data[props.row.field], reference[props.row.field])">
-                  {{reference[props.row.field].toFixed(1)}} {{props.row.unit}}
+                  {{reference[props.row.field]?.toFixed(1)}} {{props.row.unit}}
                 </b-tag>
               </p>
-              <div :class="'subtext '+get_class(data[props.row.field], reference[props.row.field])">
-                {{(data[props.row.field] - reference[props.row.field]).toFixed(1)}} {{props.row.unit}}<br>
+              <div v-if="props.row" :class="'subtext '+get_class(data[props.row.field], reference[props.row.field])">
+                {{(data[props.row.field] - reference[props.row.field])?.toFixed(1)}} {{props.row.unit}}<br>
                 {{data[props.row.field] > reference[props.row.field] ? '+' : ''}}{{((data[props.row.field] / reference[props.row.field] - 1) * 100).toFixed(1)}} %
               </div>
             </b-table-column>
-            <b-table-column v-show="local_reference != null" label="Branch Average" numeric>
-              <p >
+            <b-table-column v-slot="props" v-if="local_reference" label="Branch Average" numeric>
+              <p v-if="local_reference[props.row.field]">
                 <b-tag size="is-medium" :type="get_type(data[props.row.field], local_reference[props.row.field].average)">
                   {{local_reference[props.row.field].average.toFixed(1)}} {{props.row.unit}} <span class='lighttext'>(std: {{local_reference[props.row.field].std.toFixed(1)}} {{props.row.unit}})</span>
                 </b-tag>
               </p>
-              <div :class="'subtext '+get_class(data[props.row.field], local_reference[props.row.field].average)">
+              <div v-if="local_reference[props.row.field]" :class="'subtext '+get_class(data[props.row.field], local_reference[props.row.field].average)">
                 {{(data[props.row.field] - local_reference[props.row.field].average).toFixed(1)}} {{props.row.unit}}<br>
                 {{data[props.row.field] > local_reference[props.row.field].average ? '+' : ''}}{{((data[props.row.field] / local_reference[props.row.field].average - 1) * 100).toFixed(1)}} %
               </div>
             </b-table-column>
-          </template>
         </b-table>
       </b-tab-item>
       <b-tab-item v-if="data.output != ''" label="Output">
@@ -149,14 +147,15 @@
   export default {
     name: 'JobTest',
     data() {
-      var test_id = this.$route.params.test;
-      var job_id = this.$route.params.job;
+      let test_id = this.$route.params.test;
+      let job_id = this.$route.params.job;
       return {
         id: test_id,
         job: job_id,
         data: undefined,
         reference: undefined,
         local_reference: undefined,
+        summary: {},
         history: {
           duration: undefined,
           cpu_time: undefined,
@@ -231,31 +230,68 @@
           color: '#333',
           width: 1,
           dash: 'dot',
-        }
+        },
+        loading: false
       }
     },
     mounted() {
+      this.loading = true;
       axios
         .get(api.call("api/job", this.job, "statistics", this.id))
-        .then((res) => (this.data = res.data));
+        .then((res) => {
+            this.data = res.data;
+            for (const field of this.fields) {
+                this.summary[field.field] = this.data[field.field];
+            }
+            this.loading = false
+        })
+        .catch((err) => {
+            this.loading = false;
+            this.data = {};
+            console.error(err);
+        });
       axios
         .get(api.call("api/test", this.id, "reference"))
-        .then((res) => (this.reference = res.data));
+        .then((res) => (this.reference = res.data))
+        .catch((err) => {
+            this.reference = {};
+            this.loading = false;
+            console.error(err.response.data);
+        });
       axios
         .get(api.call("api/test", this.id, "summary", this.branch))
         .then((res) => (this.local_reference = res.data))
+        .catch((err) => {
+            console.error(err.response.data);
+        });
       axios
         .get(api.call("api/test", this.id, "history/cpu_time", this.branch))
-        .then((res) => (this.history.cpu_time = res.data));
+        .then((res) => (this.history.cpu_time = res.data))
+        .catch((err) => {
+            this.loading = false;
+            console.error(err.response.data);
+        });
       axios
         .get(api.call("api/test", this.id, "history/memory_avg", this.branch))
-        .then((res) => (this.history.memory_avg = res.data));
+        .then((res) => (this.history.memory_avg = res.data))
+        .catch((err) => {
+            this.loading = false;
+            console.error(err.response.data);
+        });
       axios
         .get(api.call("api/test", this.id, "history/duration", this.branch))
-        .then((res) => (this.history.duration = res.data));
+        .then((res) => (this.history.duration = res.data))
+        .catch((err) => {
+            this.loading = false;
+            console.error(err.response.data);
+        });
       axios
         .get(api.call("api/test", this.id, "history/io_read", this.branch))
-        .then((res) => (this.history.io_read = res.data));
+        .then((res) => (this.history.io_read = res.data))
+        .catch((err) => {
+            this.loading = false;
+            console.error(err.response.data);
+        });
     },
     components: {
       Info,
@@ -267,10 +303,10 @@
       },
 
       gauss(mu, std, min, max, norm) {
-        var xs = [];
-        var ys = [];
+        let xs = [];
+        let ys = [];
         let delta = (max - min) / 30;
-        for (var x = min; x <= max; x += delta) {
+        for (let x = min; x <= max; x += delta) {
           xs.push(x);
           let y = norm * this.gfx(mu, std, x);
           ys.push(y);
@@ -278,6 +314,9 @@
         return [xs, ys];
       },
       get_class(value, reference) {
+        if (value === undefined) {
+            return undefined;
+        }
         if (value > reference) {
           return 'failed_text';
         } else if (value < reference) {
@@ -286,6 +325,9 @@
         return undefined;
       },
       get_type(value, reference) {
+        if (value === undefined) {
+            return undefined;
+        }
         if (value < reference) {
           return 'is-success'
         }
@@ -295,11 +337,11 @@
         return undefined;
       },
       profiles() {
-        var time = [];
-        var cpu = [];
-        var read = [];
-        var memory = [];
-        for (var i = 1; i < this.data.raw_data.length; i++) {
+        let time = [];
+        let cpu = [];
+        let read = [];
+        let memory = [];
+        for (let i = 1; i < this.data.raw_data.length; i++) {
           time.push(this.data.raw_data[i][0] / 1000);
           cpu.push(this.data.raw_data[i][3]);
           read.push(this.data.raw_data[i][5]);
@@ -331,14 +373,14 @@
         return this.data.output.split("\n").join("<br>")
       },
       hist(field) {
-        if (this.history[field] == undefined) {
+        if (this.history[field] == undefined || this.local_reference == undefined) {
           return [];
         }
 
-        var xs = this.history[field].value;
+        let xs = this.history[field].value;
         // define xscale
-        var xmin = Math.min(...xs);
-        var xmax = Math.max(...xs);
+        let xmin = Math.min(...xs);
+        let xmax = Math.max(...xs);
         let delta = (xmax - xmin) / 15;
         xmin -= delta;
         xmax += delta;
@@ -348,14 +390,14 @@
         let std = this.local_reference[field].std;
         let norm = xs.length * (xmax - xmin) / nbins;
 
-        var stddist = this.gauss(mu, std, xmin, xmax, norm);
+        let stddist = this.gauss(mu, std, xmin, xmax, norm);
 
-        var res = [{
+        let res = [{
           x: stddist[0],
           y: stddist[1],
           name: 'Expected distribution'
         }];
-        for (var i = 0; i <= 2; i++) {
+        for (let i = 0; i <= 2; i++) {
           if (i == 0) {
             res.push({
               showlegend: false,
@@ -364,7 +406,7 @@
               y: [0, norm * this.gfx(mu, std, mu)]
             });
           } else {
-            var x = mu + i * std;
+            let x = mu + i * std;
             if (x < xmax) {
               res.push({
                 showlegend: false,
