@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app">
     <b-navbar>
-        <template slot="brand">
+        <template v-slot:brand>
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                 <img
                     src="https://step.esa.int/main/wp-content/uploads/2015/11/snap_survey_125.jpg"
@@ -9,7 +9,7 @@
                 >
             </b-navbar-item>
         </template>
-        <template slot="start">
+        <template v-slot:start>
             <b-navbar-item tag="router-link" :to="{ path:'/jobs'}">
                 Jobs
             </b-navbar-item>
@@ -20,7 +20,7 @@
                 Tests
             </b-navbar-item>
         </template>
-        <template slot="end">
+        <template v-slot:end>
           <b-navbar-item  tag="router-link" :to="{ path:'/about'}">
               About
           </b-navbar-item>

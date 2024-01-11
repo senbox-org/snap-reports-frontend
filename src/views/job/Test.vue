@@ -15,8 +15,6 @@
       <Info tag="Start" :value="data.start"/>
       <b>Branch:</b> <router-link :to="'/branch/'+branch">{{branch}}</router-link><br>
       <br>
-      ref: {{ [reference] }}
-      local ref: {{ [local_reference] }}
       <b-tabs cards>
       <b-tab-item label="Summary">
         <b-table :data="fields" hoverable :loading="loading">
