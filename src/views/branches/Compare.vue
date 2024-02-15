@@ -3,7 +3,10 @@
     <article>
       <p class="subtitle">Compare</p>
       <p class="title">{{tag_a}} <span class="vs">VS</span> <a class="change-branch" @click="select_branch()">{{tag_b}}</a></p>     
-      
+      <button v-if="!loading" class="button" style="float:right" @click="downloadCsv()" title="Download as CSV">
+        <img width="32" alt=".csv icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/.csv_icon.svg/32px-.csv_icon.svg.png">
+        Download
+      </button>
         <b-field label="Statistics">
         <b-select v-model="field" @input="update">
             <option value="duration">Duration</option>
@@ -66,7 +69,6 @@
   import FilterForm from '@/components/FilterForm.vue';
   import BranchList from '@/components/BranchList.vue';
   import router from '@/router'
-
 
   const axios = require('axios').default;
   import api from '@/assets/api.js';
@@ -178,9 +180,22 @@
       removeFilter(index){
         this.filters.splice(index, 1);
         this.update()
+      },
+      downloadCsv() {
+        let csv = `ID,Name,${this.tag_a},${this.tag_b},Absolute difference,Relative difference,Author\n`;
+        this.data.forEach((row) => {
+            csv += [row.test_ID, row.test_name, row.br_a_avg, row.br_b_avg, row.diff_abs, row.diff_rel, row.author].join(',');
+            csv += "\n";
+        });
+    
+        const anchor = document.createElement('a');
+        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+        anchor.target = '_blank';
+        anchor.download = `${this.tag_a}-${this.tag_b}-${this.field}`+'.csv';
+        anchor.click();
       }
     }
-  };
+  }
 </script>
 <style>
 .vs {
